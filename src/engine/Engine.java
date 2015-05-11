@@ -1,3 +1,4 @@
+
 package engine;
 
 import ihm.GuiController;
@@ -9,8 +10,7 @@ public class Engine {
     }
 
     public void setIHM(GuiController ihm) {
-	
-    }
 
+    }
 
 }
