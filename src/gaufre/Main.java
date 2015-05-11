@@ -1,12 +1,9 @@
 package gaufre;
 
 import ihm.GuiController;
-import ihm.IHM;
+import engine.Engine;
 
 import javax.swing.SwingUtilities;
-
-import com.sun.xml.internal.ws.api.pipe.Engine;
-
 
 
 
@@ -30,7 +27,7 @@ public class Main
 		Engine engine;
 
 		engine	= new Engine(defaultXDim, defaultYDim, defaultNbPlayers);
-		ihm		= new GuiController(engien);
+		ihm		= new GuiController(engine);
 
 		engine.setIHM(ihm);
 	}
