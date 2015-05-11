@@ -12,10 +12,6 @@ public class Dumb implements Player {
 	 * 
 	 * @see player.Player#makeChoice(GameState)
 	 */
-<<<<<<< HEAD
-=======
-	@Override
->>>>>>> branch 'master' of https://github.com/UlysseCoutaud/gaufre.git
 	public Point makeChoice(GameState currentConfig) {
 		Random r = new Random();
 		int tirage = r.nextInt(currentConfig.width * currentConfig.height) + 1;

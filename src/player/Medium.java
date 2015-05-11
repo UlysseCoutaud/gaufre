@@ -19,11 +19,7 @@ public class Medium implements Player {
 			return p; // Easy win
 		}
 
-<<<<<<< HEAD
-		GameState nextConfig = currentConfig.cloneState();
-=======
 		GameState nextConfig = currentConfig.cloneGameState();
->>>>>>> branch 'master' of https://github.com/UlysseCoutaud/gaufre.git
 		do { // Avoiding stupid choices
 			if (nextConfig.mustLose()) { // No choice remaining
 				System.out.println("Lose");
@@ -37,22 +33,6 @@ public class Medium implements Player {
 	}
 
 	/*
-<<<<<<< HEAD
-=======
-	 * Returns true if the only square left is poisoned
-	 */
-	private boolean mustLose(GameState cf) {
-		for (int i = 0; i < cf.width; i++) {
-			for (int j = 0; j < cf.height; j++) {
-				if (cf.isWaffle(i, j))
-					return false;
-			}
-		}
-		return true;
-	}
-
-	/*
->>>>>>> branch 'master' of https://github.com/UlysseCoutaud/gaufre.git
 	 * If all safe squares are inside a rectangle (and thus can be eaten in one
 	 * bite) returns the top left corner of this rectangle. Else returns null.
 	 */
@@ -100,11 +80,7 @@ public class Medium implements Player {
 
 		// Will the opponent win if I choose this ?
 		Point opponentChoice;
-<<<<<<< HEAD
-		GameState nextConfig = currentConfig.cloneState();
-=======
 		GameState nextConfig = (GameState) currentConfig.cloneGameState();
->>>>>>> branch 'master' of https://github.com/UlysseCoutaud/gaufre.git
 		nextConfig.eat(p);
 		opponentChoice = searchVictoryNextTurn(nextConfig);
 		return opponentChoice != null;

@@ -24,23 +24,7 @@ public class GameState {
 		return res;
 	}
 
-<<<<<<< HEAD
-	public GameState(int w, int h) {
-		width = w;
-		height = h;
-		board = new Cell[width][height];
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
-				board[i][j] = Cell.WAFFLE;
-			}
-		}
-		currentPlayer = 1;
-	}
-
-	public GameState(Cell[][] board, int width, int height, int currentPlayer) {
-=======
 	public GameState(Cell[][] board, int currentPlayer) {
->>>>>>> branch 'master' of https://github.com/UlysseCoutaud/gaufre.git
 		this.board = copyOf(board);
 		this.currentPlayer = currentPlayer;
 		this.width = board.length;
@@ -56,7 +40,6 @@ public class GameState {
 
 	public int getCurrentPlayer() {
 		return this.currentPlayer;
-<<<<<<< HEAD
 	}
 
 	/**
@@ -64,12 +47,10 @@ public class GameState {
 	 */
 	public boolean mustLose() {
 		return isEaten(0, 1) || isEaten(1, 0);
-=======
->>>>>>> branch 'master' of https://github.com/UlysseCoutaud/gaufre.git
 	}
 
 	public GameState cloneState() {
-		return new GameState(board, width, height, currentPlayer);
+		return new GameState(board, currentPlayer);
 	}
 
 	public class EdibleIterator {
