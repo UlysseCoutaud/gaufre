@@ -1,25 +1,25 @@
+package engine;
+
 public class GameState {
 
 	public enum Square {
-		EATEN,
-		POISON,
-		WAFFLE
-	}	
-	
-	Square[][] squareBoard;
-	
+		EATEN, POISON, WAFFLE
+	}
+
+	Board board;
+
 	int currentPlayer;
-	
+
 	public GameState(Board board, int currentPlayer) {
-		this.squareBoard.clone(board.board);
+		this.board = board.cloneBoard();
 		this.currentPlayer = currentPlayer;
 	}
-	
+
 	public int getCurrentPlayer() {
 		return this.currentPlayer;
 	}
-	
-	public Square[][] getSquareBoard() {
-		return this.squareBoard;
-	}	
+
+	public Board getBoard() {
+		return board;
+	}
 }

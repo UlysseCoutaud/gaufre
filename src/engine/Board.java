@@ -4,6 +4,50 @@ import java.awt.Point;
 
 public class Board {
 
+	public class EatableIterator {
+
+		private int x, y;
+		private int nextX, nextY;
+		private final Board board;
+
+		private EatableIterator(Board b) {
+			board = b;
+			x = 0;
+			y = 0;
+		}
+
+		boolean hasNext() {
+			for (int i = x; i < board.width; i++) {
+				for (int j = y; j < board.height; j++) {
+					if (board.isWaffle(i, j)) {
+						nextX = i;
+						nextY = j;
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		Square next() {
+			x = nextX;
+			y = nextY;
+			return board.board[x][y];
+		}
+
+		int getX() {
+			return x;
+		}
+
+		int getY() {
+			return y;
+		}
+
+		Point getPoint() {
+			return new Point(x, y);
+		}
+	}
+
 	public enum Square {
 		EATEN, POISON, WAFFLE
 	}
@@ -34,6 +78,10 @@ public class Board {
 				board[i][j] = b[i][j];
 			}
 		}
+	}
+
+	public EatableIterator getEatableIterator() {
+		return new EatableIterator(this);
 	}
 
 	public boolean isWaffle(int i, int j) {
