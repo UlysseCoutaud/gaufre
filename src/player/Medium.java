@@ -6,28 +6,43 @@ import java.util.Random;
 import engine.Board;
 
 /**
- * A little smarter than the dumb eater : Analyzes the next move. Avoids
- * immediate defeat and when victory is available, takes that choice
+ * A little smarter than the dumb player : Analyzes the next move.
  */
 public class Medium implements Player {
 
-	@Override
 	public Point makeChoice(Board currentConfig) {
 		Point p;
-		Point loser = new Point(0, 0);
 
 		p = searchVictoryNextTurn(currentConfig);
-		if (p != null)
+		if (p != null) {
+			System.out.println("Win");
 			return p; // Easy win
+		}
 
 		Board nextConfig = currentConfig.cloneBoard();
 		do { // Avoiding stupid choices
-			p = randomPoint(currentConfig);
-			if (p.equals(loser))
-				break; // No other choice
-			nextConfig.remove(p);
+			if (mustLose(nextConfig)) { // Only the poison is remaining
+				System.out.println("Lose");
+				p = new Point(0, 0);
+				break;
+			}
+			p = randomPoint(nextConfig);
+			nextConfig.remove(p); // We don't want to repeat the same choices
 		} while (willLoseNextTurn(currentConfig, p));
 		return p;
+	}
+
+	/*
+	 * Returns true if the only square left is poisoned
+	 */
+	private boolean mustLose(Board cf) {
+		for (int i = 0; i < cf.width; i++) {
+			for (int j = 0; j < cf.height; j++) {
+				if (cf.isWaffle(i, j))
+					return false;
+			}
+		}
+		return true;
 	}
 
 	/*
@@ -35,7 +50,7 @@ public class Medium implements Player {
 	 * bite) returns the top left corner of this rectangle. Else returns null.
 	 */
 	private Point searchVictoryNextTurn(Board currentConfig) {
-		Point poison = currentConfig.poisonPosition();
+		Point poison = new Point(0, 0);
 		Point res = null;
 		boolean wafflesDown = false; // wafflesDown = there are waffle squares
 										// under the poison
@@ -84,7 +99,9 @@ public class Medium implements Player {
 		return opponentChoice != null;
 	}
 
-	/* Dumb point choice */
+	/*
+	 * Dumb point choice
+	 */
 	private Point randomPoint(Board currentConfig) {
 		Random r = new Random();
 		int tirage = r.nextInt(currentConfig.width * currentConfig.height) + 1;

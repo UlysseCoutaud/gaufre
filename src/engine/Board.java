@@ -66,6 +66,7 @@ public class Board {
 				board[i][j] = Square.WAFFLE;
 			}
 		}
+		board[0][0] = Square.POISON;
 	}
 
 	public Board(int w, int h, Square[][] b) {
@@ -112,20 +113,7 @@ public class Board {
 	 * Returns true if we can eat this square without being poisoned
 	 */
 	public boolean isSafe(int i, int j) {
-		return true;
-	}
-
-	/**
-	 * Returns the position of the poisoned square in the waffle
-	 */
-	public Point poisonPosition() {
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
-				if (isPoison(i, j))
-					return new Point(i, j);
-			}
-		}
-		return null;
+		return i != 0 || j != 0;
 	}
 
 	public Board cloneBoard() {
@@ -147,12 +135,12 @@ public class Board {
 				} else if (isWaffle(i, j)) {
 					string += "W ";
 				} else {
-					string += "E ";
+					string += "  ";
 				}
-				string += "|";
+				string += "| ";
 			}
 			string += "\n";
-			for (i = 0; i < width; i++) {
+			for (int k = 0; k < width; k++) {
 				string += "+---";
 			}
 			string += "+\n";
@@ -163,12 +151,25 @@ public class Board {
 	/**
 	 * Eats all the waffle squares to the right and under p
 	 */
-	public void eat(Point p) {// TODO
+	public void eat(Point p) {
+		for (int i = p.x; i < width; i++) {
+			for (int j = p.y; j < height; j++) {
+				remove(i, j);
+			}
+		}
 	}
 
 	/**
 	 * Removes one waffle square
 	 */
-	public void remove(Point p) {// TODO
+	private void remove(int i, int j) {
+		board[i][j] = Square.EATEN;
+	}
+
+	/**
+	 * Removes one waffle square
+	 */
+	public void remove(Point p) {
+		board[p.x][p.y] = Square.EATEN;
 	}
 }
