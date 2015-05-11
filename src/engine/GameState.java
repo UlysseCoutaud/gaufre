@@ -22,6 +22,18 @@ public class GameState {
 		return res;
 	}
 
+	public GameState(int w, int h) {
+		width = w;
+		height = h;
+		board = new Cell[width][height];
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				board[i][j] = Cell.WAFFLE;
+			}
+		}
+		currentPlayer = 1;
+	}
+
 	public GameState(Cell[][] board, int width, int height, int currentPlayer) {
 		this.board = copyOf(board);
 		this.currentPlayer = currentPlayer;
@@ -33,16 +45,23 @@ public class GameState {
 		return this.currentPlayer;
 	}
 
-	public GameState cloneState() {
-		return null; // TODO
+	/**
+	 * Returns true if the only square left is poisoned
+	 */
+	public boolean mustLose() {
+		return isEaten(0, 1) || isEaten(1, 0);
 	}
 
-	public class EatableIterator {
+	public GameState cloneState() {
+		return new GameState(board, width, height, currentPlayer);
+	}
+
+	public class EdibleIterator {
 
 		private int x, y;
 		private int nextX, nextY;
 
-		private EatableIterator() {
+		private EdibleIterator() {
 			x = 0;
 			y = 0;
 		}
@@ -79,8 +98,8 @@ public class GameState {
 		}
 	}
 
-	public EatableIterator getEatableIterator() {
-		return new EatableIterator();
+	public EdibleIterator getEdibleIterator() {
+		return new EdibleIterator();
 	}
 
 	public boolean isWaffle(int i, int j) {
