@@ -24,6 +24,18 @@ public class Board {
 		}
 	}
 
+	public Board(int w, int h, Square[][] b) {
+		width = w;
+		height = h;
+		board = new Square[width][height];
+
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				board[i][j] = b[i][j];
+			}
+		}
+	}
+
 	public boolean isWaffle(int i, int j) {
 		return board[i][j] == Square.WAFFLE;
 	}
@@ -69,12 +81,35 @@ public class Board {
 	}
 
 	public Board cloneBoard() {
-		return this; // TODO
+		return new Board(width, height, board);
 	}
 
 	@Override
 	public String toString() {
-		return "TODO"; // TODO
+		String string = new String();
+		for (int i = 0; i < width; i++) {
+			string += "+---";
+		}
+		string += "+\n";
+		for (int i = 0; i < width; i++) {
+			string += "| ";
+			for (int j = 0; j < height; j++) {
+				if (isPoison(i, j)) {
+					string += "P ";
+				} else if (isWaffle(i, j)) {
+					string += "W ";
+				} else {
+					string += "E ";
+				}
+				string += "|";
+			}
+			string += "\n";
+			for (i = 0; i < width; i++) {
+				string += "+---";
+			}
+			string += "+\n";
+		}
+		return string;
 	}
 
 	/**

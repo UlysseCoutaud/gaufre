@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import engine.Engine;
+
 
 
 
@@ -27,7 +29,7 @@ public class ControlWindow extends JPanel
 // --------------------------------------------
 // Constructeur:
 // --------------------------------------------
-	public ControlWindow(int width, int height)
+	public ControlWindow(int width, int height, Engine engine)
 	{
 		super();
 		super.setSize(width, height);
@@ -40,5 +42,9 @@ public class ControlWindow extends JPanel
 		this.add(undo);
 		this.add(redo);
 		this.add(restart);
+
+		this.undo.addActionListener(new ActionPerformer(engine, "undo"));
+		this.redo.addActionListener(new ActionPerformer(engine, "redo"));
+		this.restart.addActionListener(new ActionPerformer(engine, "restart"));
 	}
 }
