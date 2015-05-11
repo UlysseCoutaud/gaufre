@@ -2,15 +2,20 @@ package player;
 
 import java.awt.Point;
 
-import engine.Board;
+import engine.GameState;
 
 public class TestMedium {
 
 	public static void main(String[] args) {
-		Board B = new Board(5, 5);
+		// Board B = new Board(5, 5);
+		GameState gs = new GameState(5, 5);
+
 		Player P = new Medium();
 		Point p;
 
+		// bon ici je sais pas trop ce que vous voulez faire, y'a une methode
+		// GameState.toString() si vous voulez...
+		// ~ Val
 		System.out.println(B);
 		System.out.println("=====================");
 		for (int i = 1; i <= 10; i++) {

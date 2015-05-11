@@ -3,7 +3,7 @@ package player;
 import java.awt.Point;
 import java.util.Random;
 
-import engine.Board;
+import engine.GameState;
 
 public class Dumb implements Player {
 
@@ -13,7 +13,7 @@ public class Dumb implements Player {
 	 * @see player.Player#makeChoice(Board)
 	 */
 	@Override
-	public Point makeChoice(Board currentConfig) {
+	public Point makeChoice(GameState currentConfig) {
 		Random r = new Random();
 		int tirage = r.nextInt(currentConfig.width * currentConfig.height) + 1;
 		int i = 0, j = 0;

@@ -3,14 +3,14 @@ package player;
 import java.awt.Point;
 import java.util.Random;
 
-import engine.Board;
+import engine.GameState;
 
 /**
  * A little smarter than the dumb player : Analyzes the next move.
  */
 public class Medium implements Player {
 
-	public Point makeChoice(Board currentConfig) {
+	public Point makeChoice(GameState currentConfig) {
 		Point p;
 
 		p = searchVictoryNextTurn(currentConfig);
@@ -19,7 +19,7 @@ public class Medium implements Player {
 			return p; // Easy win
 		}
 
-		Board nextConfig = currentConfig.cloneBoard();
+		GameState nextConfig = currentConfig.cloneGameState();
 		do { // Avoiding stupid choices
 			if (mustLose(nextConfig)) { // Only the poison is remaining
 				System.out.println("Lose");
@@ -35,7 +35,7 @@ public class Medium implements Player {
 	/*
 	 * Returns true if the only square left is poisoned
 	 */
-	private boolean mustLose(Board cf) {
+	private boolean mustLose(GameState cf) {
 		for (int i = 0; i < cf.width; i++) {
 			for (int j = 0; j < cf.height; j++) {
 				if (cf.isWaffle(i, j))
@@ -49,7 +49,7 @@ public class Medium implements Player {
 	 * If all safe squares are inside a rectangle (and thus can be eaten in one
 	 * bite) returns the top left corner of this rectangle. Else returns null.
 	 */
-	private Point searchVictoryNextTurn(Board currentConfig) {
+	private Point searchVictoryNextTurn(GameState currentConfig) {
 		Point poison = new Point(0, 0);
 		Point res = null;
 		boolean wafflesDown = false; // wafflesDown = there are waffle squares
@@ -86,14 +86,14 @@ public class Medium implements Player {
 	/*
 	 * Returns true if that choice lead to defeat in this turn or the next
 	 */
-	private boolean willLoseNextTurn(Board currentConfig, Point p) {
+	private boolean willLoseNextTurn(GameState currentConfig, Point p) {
 		// Is this bite poisoned ?
 		if (!currentConfig.isSafe(p.x, p.y))
 			return true;
 
 		// Will the opponent win if I choose this ?
 		Point opponentChoice;
-		Board nextConfig = (Board) currentConfig.cloneBoard();
+		GameState nextConfig = (GameState) currentConfig.cloneGameState();
 		nextConfig.eat(p);
 		opponentChoice = searchVictoryNextTurn(nextConfig);
 		return opponentChoice != null;
@@ -102,7 +102,7 @@ public class Medium implements Player {
 	/*
 	 * Dumb point choice
 	 */
-	private Point randomPoint(Board currentConfig) {
+	private Point randomPoint(GameState currentConfig) {
 		Random r = new Random();
 		int tirage = r.nextInt(currentConfig.width * currentConfig.height) + 1;
 		int i = 0, j = 0;
