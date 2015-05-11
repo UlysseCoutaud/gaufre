@@ -1,12 +1,19 @@
 package gaufre;
 
 import ihm.GuiController;
-import engine.Engine;
 
 import javax.swing.SwingUtilities;
 
+import engine.Engine;
 
+public class Main {
+	// --------------------------------------------
+	// Attributs:
+	// --------------------------------------------
+	private static final int defaultXDim = 10;
+	private static final int defaultYDim = 10;
 
+	private static final int defaultNbPlayers = 2;
 
 public class Main implements Runnable
 {
