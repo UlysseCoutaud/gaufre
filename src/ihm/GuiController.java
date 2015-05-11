@@ -40,7 +40,7 @@ public class GuiController implements ComponentListener
 // --------------------------------------------
 // Constructeur:
 // --------------------------------------------
-	public GuiController(int x, int y)
+	public GuiController(int x, int y, Engine engine)
 	{
 		int w	= (int)(partitionW	* defaultFrameWidth);								// Largeur du panneau principal
 		int h	= defaultFrameHeight - secureH;											// Hauteur du panneau principale
