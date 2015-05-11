@@ -22,7 +22,7 @@ public class Engine {
 	}
 
 	public void setIHM(GuiController ihm) {
-
+		// TODO
 	}
 
 	public void undoAction() {
@@ -43,8 +43,9 @@ public class Engine {
 		currentState = futureStack.pop();
 	}
 
+	// TODO
 	public void play(int x, int y) {
-		GameState currentState = getCurrentGameState(); // TODO
+		GameState currentState = getCurrentGameState();
 	}
 
 	public void play(Point p) {
