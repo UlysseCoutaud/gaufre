@@ -2,7 +2,7 @@ package player;
 
 import java.awt.Point;
 
-import engine.Board;
+import engine.GameState;
 
 /*
  * Interface player 
@@ -17,5 +17,5 @@ public interface Player {
 	 * Le joueur joue : prend la configuration courante en parametre, retourne
 	 * le choix du joueur sous forme de Point
 	 */
-	Point makeChoice(Board currentConfig);
+	Point makeChoice(GameState currentConfig);
 }
