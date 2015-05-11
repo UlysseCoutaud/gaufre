@@ -11,6 +11,9 @@ public class TestMedium {
 		Player P = new Medium();
 		Point p;
 
+		// bon ici je sais pas trop ce que vous voulez faire, y'a une methode
+		// GameState.toString() si vous voulez...
+		// ~ Val
 		System.out.println(B);
 		System.out.println("=====================");
 		for (int i = 1; i <= 10; i++) {

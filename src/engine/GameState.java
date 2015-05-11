@@ -2,6 +2,8 @@ package engine;
 
 import java.awt.Point;
 
+import util.util;
+
 public class GameState {
 
 	public enum Cell {
@@ -22,6 +24,7 @@ public class GameState {
 		return res;
 	}
 
+<<<<<<< HEAD
 	public GameState(int w, int h) {
 		width = w;
 		height = h;
@@ -35,14 +38,25 @@ public class GameState {
 	}
 
 	public GameState(Cell[][] board, int width, int height, int currentPlayer) {
+=======
+	public GameState(Cell[][] board, int currentPlayer) {
+>>>>>>> branch 'master' of https://github.com/UlysseCoutaud/gaufre.git
 		this.board = copyOf(board);
 		this.currentPlayer = currentPlayer;
+		this.width = board.length;
+		this.height = board[0].length;
+	}
+
+	public GameState(int width, int height) {
+		this.board = util.newBoard(width, height);
 		this.width = width;
 		this.height = height;
+		this.currentPlayer = 1;
 	}
 
 	public int getCurrentPlayer() {
 		return this.currentPlayer;
+<<<<<<< HEAD
 	}
 
 	/**
@@ -50,6 +64,8 @@ public class GameState {
 	 */
 	public boolean mustLose() {
 		return isEaten(0, 1) || isEaten(1, 0);
+=======
+>>>>>>> branch 'master' of https://github.com/UlysseCoutaud/gaufre.git
 	}
 
 	public GameState cloneState() {
@@ -133,34 +149,6 @@ public class GameState {
 		return i != 0 || j != 0;
 	}
 
-	@Override
-	public String toString() {
-		String string = new String();
-		for (int i = 0; i < width; i++) {
-			string += "+---";
-		}
-		string += "+\n";
-		for (int i = 0; i < width; i++) {
-			string += "| ";
-			for (int j = 0; j < height; j++) {
-				if (isPoison(i, j)) {
-					string += "P ";
-				} else if (isWaffle(i, j)) {
-					string += "W ";
-				} else {
-					string += "  ";
-				}
-				string += "| ";
-			}
-			string += "\n";
-			for (int k = 0; k < width; k++) {
-				string += "+---";
-			}
-			string += "+\n";
-		}
-		return string;
-	}
-
 	/**
 	 * Eats all the waffle squares to the right and under p
 	 */
@@ -184,5 +172,18 @@ public class GameState {
 	 */
 	public void remove(Point p) {
 		board[p.x][p.y] = Cell.EATEN;
+	}
+
+	public GameState cloneGameState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String toString() {
+		String str = new String();
+		str += "player " + currentPlayer + "'s turn.\n";
+		str += util.boardToString(board);
+		return str;
 	}
 }
