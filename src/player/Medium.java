@@ -6,8 +6,7 @@ import java.util.Random;
 import engine.Board;
 
 /**
- * A little smarter than the dumb eater : Analyzes the next move. Avoids
- * immediate defeat and when victory is available, takes that choice
+ * A little smarter than the dumb player : Analyzes the next move.
  */
 public class Medium implements Player {
 
@@ -27,12 +26,15 @@ public class Medium implements Player {
 				p = new Point(0, 0);
 				break;
 			}
-			p = randomPoint(currentConfig);
-			nextConfig.remove(p);
-		} while (willLoseNextTurn(nextConfig, p));
+			p = randomPoint(nextConfig);
+			nextConfig.remove(p); // We don't want to repeat the same choices
+		} while (willLoseNextTurn(currentConfig, p));
 		return p;
 	}
 
+	/*
+	 * Returns true if the only square left is poisoned
+	 */
 	private boolean mustLose(Board cf) {
 		for (int i = 0; i < cf.width; i++) {
 			for (int j = 0; j < cf.height; j++) {

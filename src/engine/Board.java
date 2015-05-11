@@ -87,7 +87,7 @@ public class Board {
 				} else if (isWaffle(i, j)) {
 					string += "W ";
 				} else {
-					string += "E ";
+					string += "  ";
 				}
 				string += "| ";
 			}
