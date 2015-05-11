@@ -1,6 +1,10 @@
 package gaufre;
 
+import ihm.IHM;
+
 import javax.swing.SwingUtilities;
+
+import engine.Engine;
 
 
 
@@ -25,7 +29,7 @@ public class Main
 		Engine engine;
 
 		engine	= new Engine(defaultXDim, defaultYDim, defaultNbPlayers);
-		ihm		= new IHM(engien);
+		ihm		= new IHM(engine);
 
 		engine.setIHM(ihm);
 	}
