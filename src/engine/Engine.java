@@ -11,7 +11,6 @@ import util.Logger;
 
 public class Engine {
 
-
     private Stack<GameState> pastStates;
     private Stack<GameState> futureStates;
     private GameState currentState;
