@@ -4,10 +4,10 @@ public class Logger {
 
 	// Properties
 
-	public static boolean enableAppLog = false;
-	public static boolean enableEngineLog = false;
-	public static boolean enableGuiLog = false;
-	public static boolean enableIaLog = false;
+	public static boolean enableAppLog = true;
+	public static boolean enableEngineLog = true;
+	public static boolean enableGuiLog = true;
+	public static boolean enableIaLog = true;
 
 	// Logs
 

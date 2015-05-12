@@ -24,7 +24,7 @@ public class ControlWindow extends JPanel
 // --------------------------------------------
 // Constructeur:
 // --------------------------------------------
-	public ControlWindow(int width, int height, Engine engine)
+	public ControlWindow(int width, int height, Engine engine, GuiController gui)
 	{
 		super();
 		super.setSize(width, height);
@@ -41,7 +41,7 @@ public class ControlWindow extends JPanel
 
 		this.undo.addActionListener		(new ActionPerformer(engine, "undo"));
 		this.redo.addActionListener		(new ActionPerformer(engine, "redo"));
-		this.restart.addActionListener	(new ActionPerformer(new RestartInterface(), "show"));
+		this.restart.addActionListener	(new ActionPerformer(new RestartInterface(engine, gui), "show"));
 	}
 
 // --------------------------------------------
