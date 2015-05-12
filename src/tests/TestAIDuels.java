@@ -25,38 +25,38 @@ public class TestAIDuels {
 			switch (i) {
 			case 0:
 				name0 = dumb;
-				name1 = medium;
 				P0 = new Dumb();
+				name1 = medium;
 				P1 = new Medium();
 				break;
 			case 1:
 				name0 = medium;
-				name1 = dumb;
 				P0 = new Medium();
+				name1 = dumb;
 				P1 = new Dumb();
 				break;
 			case 2:
 				name0 = dumb;
-				name1 = killah;
 				P0 = new Dumb();
+				name1 = killah;
 				P1 = new Killah();
 				break;
 			case 3:
 				name0 = killah;
-				name1 = dumb;
 				P0 = new Killah();
+				name1 = dumb;
 				P1 = new Dumb();
 				break;
 			case 4:
 				name0 = medium;
-				name1 = killah;
 				P0 = new Medium();
+				name1 = killah;
 				P1 = new Killah();
 				break;
 			case 5:
 				name0 = killah;
-				name1 = medium;
 				P0 = new Killah();
+				name1 = medium;
 				P1 = new Medium();
 				break;
 			}
@@ -89,12 +89,13 @@ public class TestAIDuels {
 				
 			}
 			// Total of the 50 games = result of the duel
-			winner = win0 > win1 ? name0 : name1;
 			System.out.println("Total : " + win0 + "/" + win1);
 			if (win0 == win1)
 				System.out.println("Par");
-			else
+			else {
+				winner = win0 > win1 ? name0 : name1;
 				System.out.println("The winner is " + winner);
+			}
 
 			System.out.println("===========================");
 			System.out.println("===========================");
