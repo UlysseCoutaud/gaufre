@@ -19,12 +19,13 @@ public class TestKillah3 {
 		killah = "Killah";
 
 
-
+		
 		name0 = medium;
 		name1 = killah;
 		P0 = new Medium();
 		P1 = new Killah();
 
+		System.out.println("|| "+name0 + " VS " + name1+" ||");
 
 		B = new GameState(3, 5);
 		k=1;

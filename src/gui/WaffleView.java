@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -115,6 +116,7 @@ public class WaffleView extends JPanel implements MouseListener, MouseMotionList
 		
 		// Tracing the selected zone
 		if(selectedX != null) {
+			drawable.setStroke(new BasicStroke(3));
 			if(selectedX != 0 || selectedY != 0) {
 				drawable.setPaint(backgroundColor);
 				xmax = getWidth() - xMin;
@@ -123,12 +125,12 @@ public class WaffleView extends JPanel implements MouseListener, MouseMotionList
 				yp = yMin + selectedY*cellHeight;
 				while(xp<xmax) {
 					drawable.drawLine(xp, yp, xp+dashLength, yp);
-					xp += dashLength + 3;
+					xp += dashLength + 8;
 				}
 				xp = xMin + selectedX*cellWidth;			
 				while(yp<ymax) {
 					drawable.drawLine(xp, yp, xp, yp+dashLength);
-					yp += dashLength + 3;
+					yp += dashLength + 8;
 				}
 			}
 			else
