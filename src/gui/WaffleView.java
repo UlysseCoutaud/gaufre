@@ -139,7 +139,7 @@ public class WaffleView extends JPanel implements MouseListener, MouseMotionList
 				for (int y=selectedY; y<gs.height; y++)
 				{
 					yp = yMin + y*cellHeight;
-					stripeWaffle(xp, yp, drawable);
+					if(!gs.isEaten(x, y))stripeWaffle(xp, yp, drawable);
 				}
 			}
 		}
