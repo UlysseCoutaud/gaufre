@@ -17,7 +17,7 @@ public class Engine {
 	private GameState currentState;
 	private ArrayList<Player> solveurList;
 	private int nbOfHumanPlayers;
-	private GuiController gui;
+	private GuiController gui = null;
 
 	int currentPlayer = 1;
 

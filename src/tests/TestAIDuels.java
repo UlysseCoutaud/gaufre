@@ -31,13 +31,13 @@ public class TestAIDuels {
 				name1 = dumb;
 				name2 = killah;
 				P1 = new Dumb();
-				P2 = new Killah();
+				// P2 = new Killah();
 				break;
 			default:
 				name1 = medium;
 				name2 = killah;
 				P1 = new Medium();
-				P2 = new Killah();
+				// P2 = new Killah();
 				break;
 			}
 			B = new GameState(5, 5);
