@@ -42,7 +42,7 @@ public class Engine {
 
 	public void startAIMatch() {
 		while (!currentState.mustLose()) {
-			updateIfAny();
+			updateGuiIfAny();
 			playCPU();
 			passToNextPlayer();
 		}
@@ -52,13 +52,13 @@ public class Engine {
 	public void play(int x, int y) {
 		chooseCell(new Point(x, y));
 		passToNextPlayer();
-		updateIfAny();
+		updateGuiIfAny();
 		checkForDefeat();
 
 		if (isComputerPlayer(currentPlayer)) {
 			playCPU();
 			passToNextPlayer();
-			updateIfAny();
+			updateGuiIfAny();
 			checkForDefeat();
 		}
 	}
@@ -68,7 +68,7 @@ public class Engine {
 		currentPlayer++;
 	}
 
-	private void updateIfAny() {
+	private void updateGuiIfAny() {
 		if (gui == null)
 			return;
 		gui.update();
@@ -148,5 +148,9 @@ public class Engine {
 
 	public boolean isRedoable() {
 		return !futureStates.isEmpty();
+	}
+
+	public int getNbHumanPlayers() {
+		return nbOfHumanPlayers;
 	}
 }
