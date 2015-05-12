@@ -126,6 +126,7 @@ public class Engine {
 		}
 		futureStates.push(currentState.cloneGameState());
 		currentState = pastStates.pop();
+		currentPlayer = currentState.currentPlayer;
 		gui.update();
 		Logger.logEngine("ACTION UNDONE \n " + currentState.toString());
 	}
@@ -137,6 +138,7 @@ public class Engine {
 		}
 		pastStates.push(currentState.cloneGameState());
 		currentState = futureStates.pop();
+		currentPlayer = currentState.currentPlayer;
 		gui.update();
 		Logger.logEngine("ACTION REDONE \n " + currentState.toString());
 	}
