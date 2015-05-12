@@ -25,7 +25,8 @@ public class GuiController implements ComponentListener
 // --------------------------------------------
 	private final static String				frameName			= "Waffle Game";
 	private final static String				playerText			= "Player: ";
-	private final static String				looseText			= "The looser is: ";
+	private final static String				looseText			= "The looser is: " + playerText;
+	private final static String				endInfoText			= "End of game!";
 	private final static int				defaultFrameWidth	= 800;
 	private final static int				defaultFrameHeight	= 800;
 	private final static int				secureH				= 65;
@@ -40,6 +41,7 @@ public class GuiController implements ComponentListener
 	private JTextPane						infoView;
     private JMenuItem						undoMenuItem;
     private JMenuItem						redoMenuItem;
+    private JMenuItem						restartMenuItem;
 	private ControlWindow					controlWindow;
 	private JSplitPane 						frameOrganizer1;
 	private JSplitPane 						frameOrganizer2;
@@ -52,6 +54,8 @@ public class GuiController implements ComponentListener
 // --------------------------------------------
 	public GuiController(Engine engine) throws IOException
 	{
+System.out.println(engine.isRedoable());
+System.out.println(engine.isUndoable());
 		this.engine = engine;
 		int w	= (int)(partitionW	* defaultFrameWidth);								// Largeur du panneau principal
 		int h	= defaultFrameHeight - secureH;											// Hauteur du panneau principale
@@ -80,6 +84,7 @@ public class GuiController implements ComponentListener
 		this.waffleView		.update();
 		this.controlWindow	.update();
 		this.nameView		.setText(playerText+ engine.getCurrentPlayer());
+		this.updateMenuBar();
 /*		switch(engine.getNbHumanPlayers())
 		{
 			case 0: infoView.setText(twoAIText);		break;
@@ -93,8 +98,11 @@ public class GuiController implements ComponentListener
 			default: throw new RuntimeException("Undefined nbrPlayer value: " + gs.getNbPlayer());
 		}
 */
-		if (gs.mustLose()) JOptionPane.showMessageDialog(null, looseText + engine.getCurrentPlayer());
-////		afficher une victoire
+		if (gs.mustLose())
+		{
+			JOptionPane.showMessageDialog(null, looseText + engine.getCurrentPlayer());
+			infoView.setText(endInfoText);
+		}
 	}
 
 // --------------------------------------------
@@ -133,17 +141,20 @@ public class GuiController implements ComponentListener
 // ---------------------------------------------
 // Menu Bar
 // ---------------------------------------------
-    private JMenuItem createMenuItem(String title, String action) {
+    private JMenuItem createMenuItem(String title, String action)
+    {
         JMenuItem menuItem = new JMenuItem(title);
         menuItem.addActionListener(new ActionPerformer(this.engine, action));
         return menuItem;
     }
 
-    private void setupMenuBar() {
+    private void setupMenuBar()
+    {
         this.menuBar = new JMenuBar();
 
         JMenu fileMenu = new JMenu("Game");
-        fileMenu.add(this.createMenuItem("New Game", "newGame"));
+        this.restartMenuItem = this.createMenuItem("New Game", "newGame");
+        fileMenu.add(this.restartMenuItem);
         fileMenu.add(this.createMenuItem("Load...", "loadGame"));
         fileMenu.add(this.createMenuItem("Export...", "exportGame"));
         fileMenu.add(this.createMenuItem("Quit", "saveAndQuit"));
@@ -155,5 +166,11 @@ public class GuiController implements ComponentListener
         this.redoMenuItem = this.createMenuItem("Redo", "redo");
         editMenu.add(this.redoMenuItem);
         this.menuBar.add(editMenu);
+    }
+    private void updateMenuBar()
+    {
+		this.undoMenuItem	.setEnabled(engine.isUndoable());
+		this.redoMenuItem	.setEnabled(engine.isRedoable());
+		this.restartMenuItem.setEnabled(engine.isUndoable() || engine.isRedoable());
     }
 }
