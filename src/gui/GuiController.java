@@ -98,7 +98,7 @@ public class GuiController implements ComponentListener
 */
 		if (gs.mustLose())
 		{
-			JOptionPane.showMessageDialog(null, looseText + engine.getCurrentPlayer());
+			JOptionPane.showMessageDialog(null, looseText + playersName[engine.getCurrentPlayer()-1]);
 			infoView.setText(endInfoText);
 		}
 	}
@@ -107,6 +107,13 @@ public class GuiController implements ComponentListener
 		this.playersName[0] = name1;
 		this.playersName[1] = name2;
 		this.nameView.setText(playerText+ playersName[engine.getCurrentPlayer()-1]);
+	}
+	public void setGroundDim(int x, int y)
+	{
+		if ((x <= 1) ||(y <= 1))	throw new RuntimeException("Wrong border dim: x = " + x + ". y = " + y);
+		int width	= this.waffleView.getWidth();
+		int height	= this.waffleView.getHeight();
+		this.waffleView.resize(width, height);
 	}
 
 // --------------------------------------------
@@ -160,6 +167,7 @@ public class GuiController implements ComponentListener
 
         JMenu fileMenu = new JMenu("Game");
         this.restartMenuItem = this.createMenuItem("New Game", "newGame");
+        this.restartMenuItem.addActionListener(new ActionPerformer(new RestartInterface(engine, this), "show"));
         fileMenu.add(this.restartMenuItem);
         fileMenu.add(this.createMenuItem("Load...", "loadGame"));
         fileMenu.add(this.createMenuItem("Export...", "exportGame"));

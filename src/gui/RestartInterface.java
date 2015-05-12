@@ -19,36 +19,39 @@ public class RestartInterface
 // ---------------------------------
 // Attributs
 // ---------------------------------
-	private static final String	frameName		= "Game parameters";
-	private static final String	twoIAText		= "Two CPU players";
-	private static final String	IAPlayer2Text	= "CPU: player 2";
-	private static final String	twoPlayersText	= "Two players";
-	private static final String	player1Text		= "Player1";
-	private static final String	player2Text		= "Player2";
-	private static final String	dimXText		= "Board width";
-	private static final String	dimYText		= "Board height";
-	private static final String	playersTypeText	= "Players type";
-	private static final int	frameWidth		= 300;
-	private static final int	frameHeight		= 500;
-	private static final int	nbrElemX		= 13;
-	private static final int	nbrElemY		= 2;
-	private static final int	dimMin			= 2;
-	private static final int	dimMax			= 15;	
+	private static final String		frameName		= "Game parameters";
+	private static final String		twoIAText		= "Two CPU players";
+	private static final String		IAPlayer2Text	= "CPU: player 2";
+	private static final String		twoPlayersText	= "Two players";
+	private static final String		player1Text		= "Player1";
+	private static final String		player2Text		= "Player2";
+	private static final String		dimXText		= "Board width";
+	private static final String		dimYText		= "Board height";
+	private static final String		IALevelText		= "CPU Level";
+	private static final String		playersTypeText	= "Players type";
+	private static final String[]	IALevelName		= {"Dumb", "Medium", "Killah"};
+	private static final int		frameWidth		= 300;
+	private static final int		frameHeight		= 500;
+	private static final int		nbrElemX		= 15;
+	private static final int		nbrElemY		= 2;
+	private static final int		dimMin			= 2;
+	private static final int		dimMax			= 15;	
 
-	private JFrame				frame;
-	private JTextField			player1Name;
-	private JTextField			player2Name;
-	private JComboBox<Integer>	dimXCombo;
-	private JComboBox<Integer>	dimYCombo;
-	private JRadioButton		twoIA;
-	private JRadioButton		IAPlayer2;
-	private JRadioButton		twoPlayers;
-	private JButton				ok;
-	private JButton				cancel;
-	private Integer[]			dimList;
+	private JFrame					frame;
+	private JTextField				player1Name;
+	private JTextField				player2Name;
+	private JComboBox<Integer>		dimXCombo;
+	private JComboBox<Integer>		dimYCombo;
+	private JComboBox<String>		IALevelCombo;
+	private JRadioButton			twoIA;
+	private JRadioButton			IAPlayer2;
+	private JRadioButton			twoPlayers;
+	private JButton					ok;
+	private JButton					cancel;
+	private Integer[]				dimList;
 
-	private Engine				engine;
-	private GuiController		gui;
+	private Engine					engine;
+	private GuiController			gui;
 
 // ---------------------------------
 // Constructeur
@@ -88,6 +91,8 @@ public class RestartInterface
 		bg.add(twoIA); bg.add(IAPlayer2); bg.add(twoPlayers);
 		this.twoPlayers.setSelected(true);
 
+		this.IALevelCombo	= new JComboBox<String>(IALevelName);
+
 		this.ok				= new JButton("Ok");
 		this.cancel			= new JButton("Cancel");
 		this.ok				.addActionListener(new ButtonListener("ok"));
@@ -99,6 +104,8 @@ public class RestartInterface
 		this.frame.add(new JLabel());				this.frame.add(new JLabel());
 		this.frame.add(new JLabel(dimXText));		this.frame.add(dimXCombo);
 		this.frame.add(new JLabel(dimYText));		this.frame.add(dimYCombo);
+		this.frame.add(new JLabel());				this.frame.add(new JLabel());
+		this.frame.add(new JLabel(IALevelText));	this.frame.add(IALevelCombo);
 		this.frame.add(new JLabel());				this.frame.add(new JLabel());
 		this.frame.add(new JLabel(playersTypeText));this.frame.add(twoIA);
 		this.frame.add(new JLabel());				this.frame.add(IAPlayer2);
@@ -127,6 +134,7 @@ public class RestartInterface
 			String p2Name	= player2Name.getText();
 			int w			= dimXCombo.getSelectedIndex()+dimMin;
 			int h			= dimYCombo.getSelectedIndex()+dimMin;
+			int IA			= IALevelCombo.getSelectedIndex();
 			int players;
 			if		(twoIA.isSelected())		players = 0;
 			else if	(IAPlayer2.isSelected())	players = 1;
@@ -134,7 +142,24 @@ public class RestartInterface
 
 			engine.startNewGame(w, h, players);
 			gui.setPlayersName(p1Name, p2Name);
-			gui.update();
+			gui.setGroundDim(w, h);
+			
+			if		(twoIA.isSelected())		{addIALevel(IA); addIALevel(IA); engine.startAIMatch();}
+			else
+			{
+				if	(IAPlayer2.isSelected())	addIALevel(IA);
+				gui.update();
+			}
+		}
+		private void addIALevel(int IA)
+		{
+			switch(IA)
+			{
+				case 0: engine.addEasyAI();		break;
+				case 1: engine.addMediumAI();	break;
+				case 2: engine.addHardAI();		break;
+				default: throw new RuntimeException("Unknown AI level: " + IA);
+			}
 		}
 	}
 }

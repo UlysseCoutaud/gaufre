@@ -112,7 +112,7 @@ public class WaffleView extends JPanel implements MouseListener, MouseMotionList
 				else throw new RuntimeException("Unknown case");
 			}
 		}
-		
+
 		// Tracing the selected zone
 		if(selectedX != null) {
 			if(selectedX != 0 || selectedY != 0) {

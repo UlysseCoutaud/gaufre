@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
+import player.Dumb;
+import player.Killah;
 import player.Medium;
 import player.Player;
 import util.Logger;
@@ -33,13 +35,22 @@ public class Engine {
         this.nbOfHumanPlayers = nbOfHumanPlayers;
 
         solveurList = new ArrayList<Player>();
-        for (int i = nbOfHumanPlayers; i < 2; i++) {
-            solveurList.add(new Medium()); // TODO faire en sorte qu'on puisse choisir
-        }
     }
 
     public void setIHM(GuiController ihm) {
         this.gui = ihm;
+    }
+    
+    public void addEasyAI() {
+    	solveurList.add(new Dumb());
+    }
+    
+    public void addMediumAI() {
+    	solveurList.add(new Medium());
+    }
+    
+    public void addHardAI() {
+    	solveurList.add(new Killah());
     }
 
     public void startAIMatch() {
@@ -142,7 +153,6 @@ public class Engine {
         gui.update();
         Logger.logEngine("ACTION REDONE \n " + currentState.toString());
     }
-
     public boolean isUndoable() {
         return !pastStates.isEmpty();
     }
