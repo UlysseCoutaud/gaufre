@@ -22,7 +22,10 @@ public class Engine {
     int currentPlayer = 1;
 
     public Engine(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
-
+    	restart(boardWidth, boardHeight, nbOfHumanPlayers);
+    }
+    
+    public void restart(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
         pastStates = new Stack<GameState>();
         futureStates = new Stack<GameState>();
         currentState = new GameState(boardWidth, boardHeight);
@@ -31,8 +34,7 @@ public class Engine {
 
         solveurList = new ArrayList<Player>();
         for (int i = nbOfHumanPlayers; i < 2; i++) {
-            solveurList.add(new Medium()); // TODO faire en sorte qu'on puisse
-                                           // choisir
+            solveurList.add(new Medium()); // TODO faire en sorte qu'on puisse choisir
         }
     }
 
@@ -50,8 +52,8 @@ public class Engine {
     }
 
     public void play(int x, int y) {
-        if (this.currentState.isEaten(x, y)) {
-            Logger.logEngine("Cell at " + x + " " + y + " is already eaten.");
+        if (!this.currentState.isWaffle(x, y) ) {
+            Logger.logEngine("Cell at " + x + " " + y + " can't be eaten.");
             return;
         }
 
@@ -86,8 +88,6 @@ public class Engine {
     }
 
     private void currentPlayerDefeated() {
-        // TODO current player defaite
-        // Affichage console vite fait -- Julie
         Logger.logEngine("PLAYER " + currentPlayer + " DEFEATED");
     }
 
@@ -135,6 +135,7 @@ public class Engine {
         }
         futureStates.push(currentState.cloneGameState());
         currentState = pastStates.pop();
+        currentPlayer = currentState.currentPlayer;
         gui.update();
         Logger.logEngine("ACTION UNDONE \n " + currentState.toString());
     }
@@ -146,6 +147,7 @@ public class Engine {
         }
         pastStates.push(currentState.cloneGameState());
         currentState = futureStates.pop();
+        currentPlayer = currentState.currentPlayer;
         gui.update();
         Logger.logEngine("ACTION REDONE \n " + currentState.toString());
     }
