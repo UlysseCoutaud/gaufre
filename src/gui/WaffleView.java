@@ -1,4 +1,4 @@
-package ihm;
+package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,7 +12,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import waffle.engine.Engine;
+import engine.Engine;
+import engine.GameState;
 
 
 
@@ -62,9 +63,12 @@ public class WaffleView extends JPanel implements MouseListener
 // --------------------------------------------
 	public void mouseClicked(MouseEvent e)
 	{
-throw new RuntimeException("A faireeeeeeeeeeeee########################");
+		int x = (e.getX() - xMin) / cellWidth;
+		int y = (e.getY() - yMin) / cellHeight;
+
+		engine.play(new Point(x, y));
 	}
-	public void mousePressed(MouseEvent e)	{mouseClicked(e);}
+	public void mousePressed(MouseEvent e)	{}
     public void mouseEntered(MouseEvent e)	{}
     public void mouseExited(MouseEvent e)	{}
     public void mouseReleased(MouseEvent e)	{}
@@ -79,37 +83,21 @@ throw new RuntimeException("A faireeeeeeeeeeeee########################");
 	}
 	public int getWidth()	{return this.image.getWidth();}
 	public int getHeight()	{return this.image.getHeight();}
-
-	
-	
-	
-	
-	
-	
-	
 	public void update()
 	{
-//		CurrentState cs		= engine.getCurrentState();
-class CurrentState {
-public boolean isWaffel(int x, int y) {return (x != 2 && y != 3);}
-public boolean isEaten(int x, int y) {return false;}
-public boolean isPoison(int x, int y) {return (x == 2 && y == 3);}
-}
-CurrentState cs = new CurrentState();
-this.cellWidth	= (getWidth() - 2*xMin) / 5;		// Waffle cell size
-this.cellHeight	= (getHeight() - 2*yMin) / 5;
+		GameState gs		= engine.getCurrentGameState();
 		Graphics2D drawable = this.image.createGraphics();
 		int xp, yp;
 
-		for (int x=0; x<5; x++)//////////engine.getWidth(); x++)							// For each wafle cell: draw the cell
+		for (int x=0; x<gs.width; x++)
 		{
 			xp = xMin + x*cellWidth;
-			for (int y=0; y<5; y++)////////engine.getHeight(); y++)
+			for (int y=0; y<gs.height; y++)
 			{
 				yp = yMin + y*cellHeight;
-				if		(cs.isWaffel(x, y))	drawWaffle		(xp, yp, drawable);
-				else if	(cs.isEaten(x, y))	drawEatenWaffle	(xp, yp, drawable);
-				else if	(cs.isPoison(x, y))	drawPoison		(xp, yp, drawable);
+				if		(gs.isSafeToEat(x, y))	drawWaffle		(xp, yp, drawable);
+				else if	(gs.isEaten(x, y))		drawEatenWaffle	(xp, yp, drawable);
+				else if	(gs.isPoison(x, y))		drawPoison		(xp, yp, drawable);
 				else throw new RuntimeException("Unknown case");
 			}
 		}
@@ -117,11 +105,13 @@ this.cellHeight	= (getHeight() - 2*yMin) / 5;
 	}
 	public void resize(int width, int height)
 	{
+		GameState gs = this.engine.getCurrentGameState();
+
 		this.image	= new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		this.xMin	= (int) (getWidth()*paddingWidth);							// Position of the most left waffle point
+		this.xMin	= (int) (getWidth()*paddingWidth);			// Position of the most left waffle point
 		this.yMin	= (int) (getHeight()*paddingHeight);
-/////		this.cellWidth	= (getWidth() - 2*xMin) / engine.getWidth();		// Waffle cell size
-/////		this.cellHeight	= (getHeight() - 2*yMin) / engine.getHeight();
+		this.cellWidth	= (getWidth() - 2*xMin) / gs.width;		// Waffle cell size
+		this.cellHeight	= (getHeight() - 2*yMin) / gs.height;
 		Graphics2D drawable = this.image.createGraphics();
 		drawable.setColor(this.backgroundColor);
 		drawable.fillRect(0, 0, width, height);
@@ -136,28 +126,12 @@ this.cellHeight	= (getHeight() - 2*yMin) / 5;
 	 ==============================================================*/
 	private void drawWaffle(int xp, int yp, Graphics2D drawable)
 	{
-		Point p0	= new Point(xp, yp);
-		float w		= cellWidth;
-		float h		= cellHeight;
-		float dx	= (float)cellWidth * waffleShadeProportion/nbrWaffleShades;
-		float dy	= (float)cellHeight* waffleShadeProportion/nbrWaffleShades;
+		Point p0 = new Point();
+		Point p1 = new Point();
 
-		Color c = new Color(borderOutColor.getRGB());
-		int dr	= (borderInColor.getRed()	- borderOutColor.getRed())	/ nbrWaffleShades;
-		int dg	= (borderInColor.getGreen()	- borderOutColor.getGreen())/ nbrWaffleShades;
-		int db	= (borderInColor.getBlue()	- borderOutColor.getBlue())	/ nbrWaffleShades;
-		for (int shade=0; shade<nbrWaffleShades; shade++)									// Draw the border shades
-		{
-			drawable.setPaint(c);
-			drawable.fillRect(p0.x, p0.y, (int)w, (int)h);
-			p0.x	+= dx;
-			p0.y	+= dy;
-			w		-= 2*dx;
-			h		-= 2*dy;
-			c = new Color(c.getRed()+dr, c.getGreen()+dg, c.getBlue()+db);
-		}
-		drawable.setColor(this.waffleColor);												// Draw the central color
-		drawable.fillRect(p0.x, p0.y, (int)w, (int)h);
+		drawShades(xp, yp, drawable, p0, p1);									// Draw the border shades
+		drawable.setColor(this.waffleColor);									// Draw the central color
+		drawable.fillRect(p0.x, p0.y, p1.x, p1.y);
 	}
 	/**============================================================
 	 * Draww an empty waffle cell described by the most left and high pixel (xp, yp)
@@ -168,12 +142,49 @@ this.cellHeight	= (getHeight() - 2*yMin) / 5;
 		drawable.fillRect(xp, yp, cellWidth, cellHeight);
 	}
 	/**============================================================
-	 * Draww a poisoned waffle cell described by the most left and high pixel (xp, yp)
+	 * Draws a poisoned waffle cell described by the most left and high pixel (xp, yp)
 	 ==============================================================*/
 	private void drawPoison(int xp, int yp, Graphics2D drawable)
 	{
-System.out.println("x = " + xp + "   yp = " + yp);
-		drawEatenWaffle(xp, yp, drawable);
-		drawable.drawImage(poisonImage, xp, yp, cellWidth, cellHeight, null);
+		Point p0 = new Point();
+		Point p1 = new Point();
+
+		drawShades(xp, yp, drawable, p0, p1);									// Draw the border shades
+		drawable.setColor(this.waffleColor);									// Draw the central color
+		drawable.fillRect(p0.x, p0.y, p1.x, p1.y);
+		drawable.drawImage(poisonImage, p0.x, p0.y, p1.x, p1.y, null);			// Draw the poison image
+	}
+	/**=============================================================
+	 * Draws the waffle shades in the cell described by
+	 *  the most left and high pixel (xp, yp)
+	 *  The most left and high point of the inside square is returned in p0
+	 *  The width and height of the inside square is returned in p1
+	 ================================================================*/
+	private void drawShades(int xp, int yp, Graphics2D drawable, Point p0, Point p1)
+	{
+		float w		= cellWidth;
+		float h		= cellHeight;
+		float dx	= (float)cellWidth * waffleShadeProportion/nbrWaffleShades;
+		float dy	= (float)cellHeight* waffleShadeProportion/nbrWaffleShades;
+
+		Color c = new Color(borderOutColor.getRGB());
+		int dr	= (borderInColor.getRed()	- borderOutColor.getRed())	/ nbrWaffleShades;
+		int dg	= (borderInColor.getGreen()	- borderOutColor.getGreen())/ nbrWaffleShades;
+		int db	= (borderInColor.getBlue()	- borderOutColor.getBlue())	/ nbrWaffleShades;
+
+		p0.x = xp;
+		p0.y = yp;
+		for (int shade=0; shade<nbrWaffleShades; shade++)
+		{
+			drawable.setPaint(c);
+			drawable.fillRect(p0.x, p0.y, (int)w, (int)h);
+			p0.x	+= dx;
+			p0.y	+= dy;
+			w		-= 2*dx;
+			h		-= 2*dy;
+			c = new Color(c.getRed()+dr, c.getGreen()+dg, c.getBlue()+db);
+		}
+		p1.x = (int)w;
+		p1.y = (int)h;
 	}
 }

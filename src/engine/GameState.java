@@ -34,7 +34,7 @@ public class GameState {
 	 * Returns true if the only square left is poisoned
 	 */
 	public boolean mustLose() {
-		return height > 1 && isEaten(0, 1) && width > 1 && isEaten(0, 1);
+		return height > 1 && isEaten(0, 1) && width > 1 && isEaten(1, 0);
 	}
 
 	public boolean isWaffle(int i, int j) {
@@ -64,8 +64,8 @@ public class GameState {
 	/**
 	 * Returns true if we can eat this square without being poisoned
 	 */
-	public boolean isSafe(int i, int j) {
-		return i != 0 || j != 0;
+	public boolean isSafeToEat(int i, int j) {
+		return isWaffle(i, j);
 	}
 
 	public Cell getCell(int i, int j) {
@@ -141,9 +141,9 @@ public class GameState {
 		}
 		string += "+\n";
 
-		for (int i = 0; i < board.length; i++) {
+		for (int j = 0; j < board.length; j++) {
 			string += "| ";
-			for (int j = 0; j < board[0].length; j++) {
+			for (int i = 0; i < board[0].length; i++) {
 				Cell cell = board[i][j];
 				switch (cell) {
 				case POISON:

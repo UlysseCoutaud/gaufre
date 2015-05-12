@@ -15,7 +15,7 @@ public class EngineTest {
 		
 		Engine engine;
 
-		int width = 10, height = 10;
+		int width = 16, height = 9;
 
 		engine = new Engine(width, height, nbOfPlayers);
 

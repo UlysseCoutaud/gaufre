@@ -1,4 +1,4 @@
-package ihm;
+package gui;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -7,11 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 
-import waffle.engine.Engine;
-import waffle.engine.GameState;
+import engine.Engine;
+import engine.GameState;
 
 
 
@@ -24,6 +25,7 @@ public class GuiController implements ComponentListener
 // --------------------------------------------
 	private final static String				frameName			= "Waffle Game";
 	private final static String				playerText			= "Player: ";
+	private final static String				looseText			= "The looser is: ";
 	private final static int				defaultFrameWidth	= 800;
 	private final static int				defaultFrameHeight	= 800;
 	private final static int				secureH				= 65;
@@ -50,6 +52,7 @@ public class GuiController implements ComponentListener
 // --------------------------------------------
 	public GuiController(Engine engine) throws IOException
 	{
+		this.engine = engine;
 		int w	= (int)(partitionW	* defaultFrameWidth);								// Largeur du panneau principal
 		int h	= defaultFrameHeight - secureH;											// Hauteur du panneau principale
 		int h1	= (int)(partitionH1	* h);												// Hauteur du panneau lateral haut
@@ -89,7 +92,10 @@ public class GuiController implements ComponentListener
 			case 2: infoView.setText(this.twoPlayersText);	break
 			default: throw new RuntimeException("Undefined nbrPlayer value: " + gs.getNbPlayer());
 		}
-*/	}
+*/
+		if (gs.mustLose()) JOptionPane.showMessageDialog(null, looseText + engine.getCurrentPlayer());
+////		afficher une victoire
+	}
 
 // --------------------------------------------
 // Resizer:
