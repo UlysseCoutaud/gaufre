@@ -131,7 +131,7 @@ public class GuiController implements ComponentListener {
 
     // Updating interface
 
-    public void updateInterface() {
+    public void update() {
         this.undoMenuItem.setEnabled(this.engine.isUndoable());
         this.redoMenuItem.setEnabled(this.engine.isRedoable());
         // this.undoButton.setEnabled(this.engine.isUndoable());

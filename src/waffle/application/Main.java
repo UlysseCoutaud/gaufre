@@ -20,9 +20,14 @@ public class Main implements Runnable {
     public void run() {
         Logger.logApp("App will launch");
 
-        Engine engine = new Engine(defaultXDim, defaultYDim, defaultNbPlayers);
+        int nbOfPlayers = defaultNbPlayers;
+        Engine engine = new Engine(defaultXDim, defaultYDim, nbOfPlayers);
         GuiController guiController = new GuiController(engine);
         engine.setIHM(guiController);
+
+        if (nbOfPlayers == 0) {
+            engine.startAIMatch();
+        }
 
         Logger.logApp("App did launch");
     }

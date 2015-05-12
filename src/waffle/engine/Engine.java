@@ -2,38 +2,97 @@
 package waffle.engine;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Stack;
 import waffle.gui.GuiController;
+import waffle.player.Medium;
+import waffle.player.Player;
 import waffle.util.Logger;
 
 public class Engine {
 
-    // Properties
-
-    private Stack<GameState> undoStack;
-    private Stack<GameState> redoStack;
+    private Stack<GameState> pastStates;
+    private Stack<GameState> futureStates;
     private GameState currentState;
+    private ArrayList<Player> solveurList;
+    private int nbOfHumanPlayers;
+    private GuiController gui;
 
     int currentPlayer = 1;
 
-    // Constructors
-
     public Engine(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
-        this.undoStack = new Stack<GameState>();
-        this.redoStack = new Stack<GameState>();
-    }
 
-    // Getters / setters
+        pastStates = new Stack<GameState>();
+        futureStates = new Stack<GameState>();
+        currentState = new GameState(boardHeight, boardWidth);
+        this.nbOfHumanPlayers = nbOfHumanPlayers;
+
+        solveurList = new ArrayList<Player>();
+        for (int i = nbOfHumanPlayers; i < 2; i++) {
+            solveurList.add(new Medium()); // TODO faire en sorte qu'on puisse
+                                           // choisir
+        }
+    }
 
     public void setIHM(GuiController ihm) {
-        // TODO
+        this.gui = ihm;
     }
 
-    // Actions
+    public void startAIMatch() {
+        while (!currentState.mustLose()) {
+            gui.update();
+            playCPU();
+            currentPlayer++;
+        }
+        currentPlayerDefeated();
+    }
 
     // TODO
     public void play(int x, int y) {
-        GameState currentState = this.getCurrentGameState();
+        chooseCell(new Point(x, y));
+        currentPlayer++;
+        gui.update();
+        checkForDefeat();
+
+        if (isComputerPlayer(currentPlayer)) {
+            playCPU();
+            currentPlayer++;
+            gui.update();
+            checkForDefeat();
+        }
+    }
+
+    private void checkForDefeat() {
+        if (currentState.mustLose()) {
+            currentPlayerDefeated();
+        }
+    }
+
+    private void currentPlayerDefeated() {
+        // TODO current player defaite
+    }
+
+    private void playCPU() {
+        Player cpu = solveurList.get(currentPlayer - nbOfHumanPlayers - 1); // should
+                                                                            // always
+                                                                            // be
+                                                                            // 1
+                                                                            // but
+                                                                            // generic
+                                                                            // this
+                                                                            // way
+        Point p = cpu.makeChoice(currentState);
+        chooseCell(p);
+    }
+
+    private void chooseCell(Point p) {
+        pastStates.push(currentState);
+        currentState = currentState.cloneGameState();
+        currentState.eat(p);
+    }
+
+    private boolean isComputerPlayer(int player) {
+        return player > nbOfHumanPlayers;
     }
 
     public void play(Point p) {
@@ -48,32 +107,31 @@ public class Engine {
         return currentPlayer;
     }
 
-    // Undo / Redo
-
-    public boolean isUndoable() {
-        return !this.undoStack.isEmpty();
-    }
-
-    public boolean isRedoable() {
-        return !this.redoStack.isEmpty();
-    }
+    // Undo / redo
 
     public void undoAction() {
-        if (!this.isUndoable()) {
+        if (!isUndoable()) {
             Logger.logEngine("No Actions left to undo.");
             return;
         }
-        this.redoStack.push(this.currentState);
-        this.currentState = this.undoStack.pop();
+        futureStates.push(currentState);
+        currentState = pastStates.pop();
     }
 
     public void redoAction() {
-        if (!this.isRedoable()) {
+        if (!isRedoable()) {
             Logger.logEngine("No actions to redo.");
             return;
         }
-        this.undoStack.push(this.currentState);
-        this.currentState = this.redoStack.pop();
+        pastStates.push(currentState);
+        currentState = futureStates.pop();
     }
 
+    public boolean isUndoable() {
+        return !pastStates.isEmpty();
+    }
+
+    public boolean isRedoable() {
+        return !futureStates.isEmpty();
+    }
 }

@@ -41,7 +41,7 @@ public class GameState {
      * Returns true if the only square left is poisoned
      */
     public boolean mustLose() {
-        return isEaten(0, 1) || isEaten(1, 0);
+        return isEaten(0, 1) && isEaten(1, 0);
     }
 
     public boolean isWaffle(int i, int j) {
@@ -78,12 +78,16 @@ public class GameState {
     /**
      * Eats all the waffle squares to the right and under p
      */
-    public void eat(Point p) {
-        for (int i = p.x; i < width; i++) {
-            for (int j = p.y; j < height; j++) {
+    public void eat(int x, int y) {
+        for (int i = x; i < width; i++) {
+            for (int j = y; j < height; j++) {
                 remove(i, j);
             }
         }
+    }
+
+    public void eat(Point p) {
+        eat(p.x, p.y);
     }
 
     /**
