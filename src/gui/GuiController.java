@@ -1,4 +1,4 @@
-package ihm;
+package gui;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -10,8 +10,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 
-import waffle.engine.Engine;
-import waffle.engine.GameState;
+import engine.Engine;
+import engine.GameState;
 
 
 
