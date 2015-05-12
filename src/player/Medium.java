@@ -14,18 +14,21 @@ public class Medium implements Player {
 		Point p;
 
 		p = searchVictoryNextTurn(currentConfig);
+		// Easy win
 		if (p != null) {
-			return p; // Easy win
+			return p;
 		}
 
-		GameState nextConfig = currentConfig.cloneGameState();
-		do { // Avoiding stupid choices
-			if (currentConfig.mustLose()) { // No choice remaining
+		// Avoiding losing choices
+		GameState availableChoices = currentConfig.cloneGameState();
+		do {
+			// No choice left
+			if (currentConfig.mustLose() || availableChoices.boardIsEmpty()) {
 				p = new Point(0, 0);
 				break;
 			}
-			p = randomPoint(nextConfig);
-			nextConfig.remove(p); // We don't want to repeat the same choices
+			p = randomPoint(availableChoices);
+			availableChoices.remove(p);
 		} while (willLoseNextTurn(currentConfig, p));
 		return p;
 	}
@@ -78,7 +81,7 @@ public class Medium implements Player {
 
 		// Will the opponent win if I choose this ?
 		Point opponentChoice;
-		GameState nextConfig = (GameState) currentConfig.cloneGameState();
+		GameState nextConfig = currentConfig.cloneGameState();
 		nextConfig.eat(p);
 		opponentChoice = searchVictoryNextTurn(nextConfig);
 		return opponentChoice != null;

@@ -3,6 +3,7 @@ package gui;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.IOException;
+
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -13,10 +14,6 @@ import javax.swing.JTextPane;
 
 import engine.Engine;
 import engine.GameState;
-
-
-
-
 
 public class GuiController implements ComponentListener
 {
@@ -68,15 +65,15 @@ public class GuiController implements ComponentListener
 
 		this.frame = new JFrame(frameName);
 		this.frame.setSize(defaultFrameWidth, defaultFrameHeight);
-		this.frame.setJMenuBar(menuBar);												// Placer l'ensemble des pan dans la fenetre
+		this.frame.setJMenuBar(menuBar); // Placer l'ensemble des pan dans la
+											// fenetre
 		this.frame.add(frameOrganizer3);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.setVisible(true);
 	}
-	public void update()
-	{
-		GameState gs = engine.getCurrentGameState();
 
+	public void update() {
+		GameState gs = engine.getCurrentGameState();
 		this.waffleView		.update();
 		this.controlWindow	.update();
 		this.nameView		.setText(playerText+ engine.getCurrentPlayer());
@@ -106,20 +103,26 @@ public class GuiController implements ComponentListener
 		int height 	= e.getComponent().getHeight();
 		this.resize(width, height);
 	}
-	private void resize(int width, int height)
-	{
-		int w	= (int)(partitionW	* width);								// Largeur du panneau principal
-		int h	= height - secureH;											// Hauteur du panneau principale
-		int h1	= (int)(partitionH1	* h);									// Hauteur du panneau lateral haut
-		int h2	= (int)(partitionH2	* h);									// Hauteur du panneau lateral centrale
+
+	private void resize(int width, int height) {
+		int w = (int) (partitionW * width); // Largeur du panneau principal
+		int h = height - secureH; // Hauteur du panneau principale
+		int h1 = (int) (partitionH1 * h); // Hauteur du panneau lateral haut
+		int h2 = (int) (partitionH2 * h); // Hauteur du panneau lateral centrale
 
 		this.waffleView.resize(w, h);
-		this.frameOrganizer1= new JSplitPane(JSplitPane.VERTICAL_SPLIT,	true, infoView, controlWindow);
-		this.frameOrganizer2= new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, nameView, frameOrganizer1);
-		this.frameOrganizer3= new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,true, waffleView, frameOrganizer2);
-		this.frameOrganizer1.setDividerLocation(h2);						// Placer le separateur de fenetres vertical
-		this.frameOrganizer2.setDividerLocation(h1);						// Placer le separateur de fenetres vertical
-		this.frameOrganizer3.setDividerLocation(w);							// Placer le separateur de fenetres horizontal
+		this.frameOrganizer1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
+				infoView, controlWindow);
+		this.frameOrganizer2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
+				nameView, frameOrganizer1);
+		this.frameOrganizer3 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+				true, waffleView, frameOrganizer2);
+		this.frameOrganizer1.setDividerLocation(h2); // Placer le separateur de
+														// fenetres vertical
+		this.frameOrganizer2.setDividerLocation(h1); // Placer le separateur de
+														// fenetres vertical
+		this.frameOrganizer3.setDividerLocation(w); // Placer le separateur de
+													// fenetres horizontal
 		this.frameOrganizer1.setDividerSize(12);
 		this.frameOrganizer2.setDividerSize(12);
 		this.frameOrganizer3.setDividerSize(12);
@@ -127,33 +130,40 @@ public class GuiController implements ComponentListener
 		this.frameOrganizer2.setEnabled(false);
 		this.frameOrganizer3.setEnabled(false);
 	}
-	public void componentHidden(ComponentEvent arg0)	{}
-	public void componentMoved(ComponentEvent arg0)		{}
-	public void componentShown(ComponentEvent arg0)		{}
-// ---------------------------------------------
-// Menu Bar
-// ---------------------------------------------
-    private JMenuItem createMenuItem(String title, String action) {
-        JMenuItem menuItem = new JMenuItem(title);
-        menuItem.addActionListener(new ActionPerformer(this.engine, action));
-        return menuItem;
-    }
 
-    private void setupMenuBar() {
-        this.menuBar = new JMenuBar();
+	public void componentHidden(ComponentEvent arg0) {
+	}
 
-        JMenu fileMenu = new JMenu("Game");
-        fileMenu.add(this.createMenuItem("New Game", "newGame"));
-        fileMenu.add(this.createMenuItem("Load...", "loadGame"));
-        fileMenu.add(this.createMenuItem("Export...", "exportGame"));
-        fileMenu.add(this.createMenuItem("Quit", "saveAndQuit"));
-        this.menuBar.add(fileMenu);
+	public void componentMoved(ComponentEvent arg0) {
+	}
 
-        JMenu editMenu = new JMenu("Edit");
-        this.undoMenuItem = this.createMenuItem("Undo", "undo");
-        editMenu.add(this.undoMenuItem);
-        this.redoMenuItem = this.createMenuItem("Redo", "redo");
-        editMenu.add(this.redoMenuItem);
-        this.menuBar.add(editMenu);
-    }
+	public void componentShown(ComponentEvent arg0) {
+	}
+
+	// ---------------------------------------------
+	// Menu Bar
+	// ---------------------------------------------
+	private JMenuItem createMenuItem(String title, String action) {
+		JMenuItem menuItem = new JMenuItem(title);
+		menuItem.addActionListener(new ActionPerformer(this.engine, action));
+		return menuItem;
+	}
+
+	private void setupMenuBar() {
+		this.menuBar = new JMenuBar();
+
+		JMenu fileMenu = new JMenu("Game");
+		fileMenu.add(this.createMenuItem("New Game", "newGame"));
+		fileMenu.add(this.createMenuItem("Load...", "loadGame"));
+		fileMenu.add(this.createMenuItem("Export...", "exportGame"));
+		fileMenu.add(this.createMenuItem("Quit", "saveAndQuit"));
+		this.menuBar.add(fileMenu);
+
+		JMenu editMenu = new JMenu("Edit");
+		this.undoMenuItem = this.createMenuItem("Undo", "undo");
+		editMenu.add(this.undoMenuItem);
+		this.redoMenuItem = this.createMenuItem("Redo", "redo");
+		editMenu.add(this.redoMenuItem);
+		this.menuBar.add(editMenu);
+	}
 }

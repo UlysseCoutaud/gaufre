@@ -15,11 +15,15 @@ public class TestMedium {
 
 		System.out.println(B);
 		System.out.println("=====================");
-		for (int i = 1; i <= 10; i++) {
+		System.out.println("=====================");
+		for (int i = 1; i <= 100; i++) {
+			if (B.mustLose())
+				break;
 			p = P.makeChoice(B);
 			B.eat(p);
 			System.out.println(i + ": (" + p.y + "," + p.x + ")");
 			System.out.println(B);
+			System.out.println("=====================");
 			System.out.println("=====================");
 		}
 

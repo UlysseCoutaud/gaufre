@@ -78,6 +78,8 @@ public class GameState {
 	public void eat(int x, int y) {
 		for (int i = x; i < width; i++) {
 			for (int j = y; j < height; j++) {
+				if (isEaten(i, j))
+					break;
 				remove(i, j);
 			}
 		}
@@ -182,8 +184,14 @@ public class GameState {
 		}
 
 		public boolean hasNext() {
-			for (int i = x; i < width; i++) {
-				for (int j = y; j < height; j++) {
+			for(int i = x + 1; i < width; i++) {
+				if(isWaffle(i, y)) {
+					nextX = i;
+					return true;
+				}
+			}
+			for (int i = 0; i < width; i++) {
+				for (int j = y + 1; j < height; j++) {
 					if (isWaffle(i, j)) {
 						nextX = i;
 						nextY = j;
@@ -227,6 +235,18 @@ public class GameState {
 			for (int j = 0; j < height; j++) {
 				if (gs.board[i][j] != board[i][j])
 					return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean boardIsEmpty() {
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				if (!isEaten(i, j)) {
+					return false;
+				}
+
 			}
 		}
 		return true;
