@@ -102,6 +102,7 @@ public class Engine {
 	private void chooseCell(Point p) {
 		pastStates.push(currentState);
 		currentState = currentState.cloneGameState();
+		currentState.currentPlayer = currentPlayer;
 		currentState.eat(p);
 		Logger.logEngine(currentState.toString());
 	}
