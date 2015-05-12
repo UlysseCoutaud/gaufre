@@ -3,6 +3,7 @@ package player;
 import java.awt.Point;
 import java.util.Random;
 
+import util.Logger;
 import engine.GameState;
 
 /**
@@ -16,6 +17,7 @@ public class Medium implements Player {
 		p = searchVictoryNextTurn(currentConfig);
 		// Easy win
 		if (p != null) {
+			Logger.logIa("Easy win ! ("+p.y+","+p.x+")");
 			return p;
 		}
 
@@ -24,6 +26,7 @@ public class Medium implements Player {
 		do {
 			// Only poison
 			if (currentConfig.mustLose()) {
+				Logger.logIa("Only poison left => Suicide !");
 				p = new Point(0, 0);
 				break;
 			}
@@ -32,6 +35,7 @@ public class Medium implements Player {
 				do {
 					p = randomPoint(currentConfig);
 				} while(p.equals(new Point(0,0)));
+				Logger.logIa("Only losing choices left");
 				break;
 			}				
 			p = randomPoint(availableChoices);

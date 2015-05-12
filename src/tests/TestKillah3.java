@@ -19,15 +19,17 @@ public class TestKillah3 {
 		killah = "Killah";
 
 
-
+		
 		name0 = medium;
 		name1 = killah;
 		P0 = new Medium();
 		P1 = new Killah();
 
+		System.out.println("|| "+name0 + " VS " + name1+" ||");
 
-		B = new GameState(3, 5);
-		k=1;
+		B = new GameState(3,3);
+		k=0;
+
 		while (! B.mustLose()) {
 			k++;
 			if(k%2 == 0){
@@ -39,7 +41,7 @@ public class TestKillah3 {
 				p = P0.makeChoice(B);
 			}
 			B.eat(p);
-			System.out.println(B);
+			System.out.println("I choosed "+p+B);
 		}
 		
 		// Who wins ?
