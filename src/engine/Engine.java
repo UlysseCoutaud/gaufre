@@ -19,8 +19,6 @@ public class Engine {
     private int nbOfHumanPlayers;
     private GuiController gui = null;
 
-    int currentPlayer = 1;
-
     public Engine(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
     	restart(boardWidth, boardHeight, nbOfHumanPlayers);
     }
@@ -46,7 +44,6 @@ public class Engine {
         while (!currentState.mustLose()) {
             updateGuiIfAny();
             playCPU();
-            passToNextPlayer();
         }
         currentPlayerDefeated();
     }
@@ -57,22 +54,15 @@ public class Engine {
             return;
         }
 
-        chooseCell(new Point(x, y));
-        passToNextPlayer();
-        updateGuiIfAny();
         checkForDefeat();
+        chooseCell(new Point(x, y));
+        updateGuiIfAny();
 
-        if (isComputerPlayer(currentPlayer) && !currentState.mustLose()) {
-            playCPU();
-            passToNextPlayer();
-            updateGuiIfAny();
+        if (isComputerPlayer(getCurrentPlayer()) && !currentState.mustLose()) {
             checkForDefeat();
+            playCPU();
+            updateGuiIfAny();
         }
-    }
-
-    private void passToNextPlayer() {
-        currentPlayer %= 2;
-        currentPlayer++;
     }
 
     private void updateGuiIfAny() {
@@ -88,11 +78,11 @@ public class Engine {
     }
 
     private void currentPlayerDefeated() {
-        Logger.logEngine("PLAYER " + currentPlayer + " DEFEATED");
+        Logger.logEngine("PLAYER " + getCurrentPlayer() + " DEFEATED");
     }
 
     private void playCPU() {
-        Player cpu = solveurList.get(currentPlayer - nbOfHumanPlayers - 1);
+        Player cpu = solveurList.get(getCurrentPlayer() - nbOfHumanPlayers - 1);
         Point p;
         do {
             p = cpu.makeChoice(currentState);
@@ -105,7 +95,8 @@ public class Engine {
         futureStates.clear();
         pastStates.push(currentState.cloneGameState());
         currentState = currentState.cloneGameState();
-        currentState.currentPlayer = currentPlayer;
+        currentState.currentPlayer %= 2;
+        currentState.currentPlayer++;
         currentState.eat(p);
         Logger.logEngine(currentState.toString());
     }
@@ -123,7 +114,7 @@ public class Engine {
     }
 
     public int getCurrentPlayer() {
-        return currentPlayer;
+        return currentState.currentPlayer;
     }
 
     // Undo / redo
@@ -135,7 +126,6 @@ public class Engine {
         }
         futureStates.push(currentState.cloneGameState());
         currentState = pastStates.pop();
-        currentPlayer = currentState.currentPlayer;
         gui.update();
         Logger.logEngine("ACTION UNDONE \n " + currentState.toString());
     }
@@ -147,7 +137,6 @@ public class Engine {
         }
         pastStates.push(currentState.cloneGameState());
         currentState = futureStates.pop();
-        currentPlayer = currentState.currentPlayer;
         gui.update();
         Logger.logEngine("ACTION REDONE \n " + currentState.toString());
     }
