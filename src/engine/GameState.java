@@ -4,8 +4,6 @@ import java.awt.Point;
 
 public class GameState {
 
-	// Properties
-
 	public enum Cell {
 		EATEN, POISON, WAFFLE
 	}
@@ -13,8 +11,6 @@ public class GameState {
 	public final Cell[][] board;
 	public int currentPlayer;
 	public final int width, height;
-
-	// Constructors
 
 	public GameState(Cell[][] board, int currentPlayer) {
 		this.board = this.copyBoard(board);
@@ -33,8 +29,6 @@ public class GameState {
 	public int getCurrentPlayer() {
 		return this.currentPlayer;
 	}
-
-	// State of cells
 
 	/**
 	 * Returns true if the only square left is poisoned
@@ -121,8 +115,6 @@ public class GameState {
 		return str;
 	}
 
-	// Board helpers
-
 	private Cell[][] generateNewBoard(int w, int h) {
 		Cell[][] res = new Cell[w][h];
 		for (int i = 0; i < w; i++) {
@@ -177,8 +169,6 @@ public class GameState {
 		return string;
 	}
 
-	// Iterators
-
 	public EdibleIterator getEdibleIterator() {
 		return new EdibleIterator();
 	}
@@ -225,4 +215,17 @@ public class GameState {
 		}
 	}
 
+	public boolean equals(Object o) {
+		if(!(o instanceof GameState)) return false;
+		GameState gs = (GameState)o;
+		if(gs.currentPlayer != currentPlayer) return false;
+		if(gs.width != width) return false;
+		if(gs.height != height) return false;
+		for(int i = 0; i < width; i++) {
+			for(int j = 0; j < height; j++) {
+				if(gs.board[i][j] != board[i][j]) return false;
+			}
+		}
+		return true;
+	}
 }

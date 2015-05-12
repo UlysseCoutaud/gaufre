@@ -25,7 +25,8 @@ public class Engine {
 
 		pastStates = new Stack<GameState>();
 		futureStates = new Stack<GameState>();
-		currentState = new GameState(boardHeight, boardWidth);
+		currentState = new GameState(boardWidth, boardHeight);
+		Logger.logEngine(currentState.toString());
 		this.nbOfHumanPlayers = nbOfHumanPlayers;
 
 		solveurList = new ArrayList<Player>();
@@ -41,26 +42,36 @@ public class Engine {
 
 	public void startAIMatch() {
 		while (!currentState.mustLose()) {
-			gui.update();
+			updateGuiIfAny();
 			playCPU();
-			currentPlayer++;
+			passToNextPlayer();
 		}
 		currentPlayerDefeated();
 	}
 
-	// TODO
 	public void play(int x, int y) {
 		chooseCell(new Point(x, y));
-		currentPlayer++;
-		gui.update();
+		passToNextPlayer();
+		updateGuiIfAny();
 		checkForDefeat();
 
 		if (isComputerPlayer(currentPlayer)) {
 			playCPU();
-			currentPlayer++;
-			gui.update();
+			passToNextPlayer();
+			updateGuiIfAny();
 			checkForDefeat();
 		}
+	}
+
+	private void passToNextPlayer() {
+		currentPlayer %= 2;
+		currentPlayer++;
+	}
+
+	private void updateGuiIfAny() {
+		if (gui == null)
+			return;
+		gui.update();
 	}
 
 	private void checkForDefeat() {
@@ -72,7 +83,7 @@ public class Engine {
 	private void currentPlayerDefeated() {
 		// TODO current player defaite
 		// Affichage console vite fait -- Julie
-		System.out.println("player " + currentPlayer + " defeated");
+		Logger.logEngine("PLAYER " + currentPlayer + " DEFEATED");
 	}
 
 	private void playCPU() {
@@ -92,6 +103,7 @@ public class Engine {
 		pastStates.push(currentState);
 		currentState = currentState.cloneGameState();
 		currentState.eat(p);
+		Logger.logEngine(currentState.toString());
 	}
 
 	private boolean isComputerPlayer(int player) {
@@ -136,5 +148,9 @@ public class Engine {
 
 	public boolean isRedoable() {
 		return !futureStates.isEmpty();
+	}
+
+	public int getNbHumanPlayers() {
+		return nbOfHumanPlayers;
 	}
 }
