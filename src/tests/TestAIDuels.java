@@ -1,73 +1,97 @@
 package tests;
 
-import player.Dumb;
-import player.Medium;
-import player.Player;
+import java.awt.Point;
+
+import player.*;
 import engine.GameState;
 
 public class TestAIDuels {
 
 	public static void main(String[] args) {
 		GameState B;
-		Player P1, P2;
-		int win1, win2;
-		String dumb, medium, killah, winner, name1, name2;
-		dumb = "Dumb";
+		Player P0, P1;
+		Point p;
+		int win0, win1;
+		String dumb, medium, killah, winner, name0, name1;
+		dumb = "Easy";
 		medium = "Medium";
-		killah = "Killah";
+		killah = "Difficult";
 
+		/* We do 6 duels in total :
+		 * Each of the 3 players fights against the 2 others
+		 * They first begin the matches, then play second
+		 */
 		for (int i = 0; i < 5; i++) {
 			switch (i) {
 			case 0:
-				name1 = dumb;
-				name2 = medium;
-				P1 = new Dumb();
-				P2 = new Medium();
+				name0 = dumb;
+				name1 = medium;
+				P0 = new Dumb();
+				P1 = new Medium();
 				break;
 			case 1:
-				name1 = medium;
-				name2 = dumb;
-				P1 = new Medium();
-				P2 = new Dumb();
+				name0 = medium;
+				name1 = dumb;
+				P0 = new Medium();
+				P1 = new Dumb();
 				break;
 			case 2:
-				name1 = dumb;
-				name2 = killah;
-				P1 = new Dumb();
-				// P2 = new Killah();
+				name0 = dumb;
+				name1 = killah;
+				P0 = new Dumb();
+				P1 = new Killah();
 				break;
 			case 3:
-				name1 = killah;
-				name2 = dumb;
-				// P1 = new Killah();
-				P2 = new Dumb();
+				name0 = killah;
+				name1 = dumb;
+				P0 = new Killah();
+				P1 = new Dumb();
 				break;
 			case 4:
-				name1 = medium;
-				name2 = killah;
-				P1 = new Medium();
-				// P2 = new Killah();
+				name0 = medium;
+				name1 = killah;
+				P0 = new Medium();
+				P1 = new Killah();
 				break;
 			default:
-				name1 = killah;
-				name2 = medium;
-				// P1 = new Killah();
-				P2 = new Medium();
+				name0 = killah;
+				name1 = medium;
+				P0 = new Killah();
+				P1 = new Medium();
 				break;
 			}
-			B = new GameState(5, 5);
-			win1 = win2 = 0;
-			System.out.println(name1 + " VS " + name2);
-			for (int j = 0; j < 20; j++) {
-				// TODO : New games
-				/*
-				 * if(player1 wins) { win1++; winner = name1; } else { win2++;
-				 * winner = name2; } System.out.println(winner + " wins");
-				 */
+			win0 = win1 = 0;
+			System.out.println("|| "+name0 + " VS " + name1+" ||");
+			// Each duel consists of 50 games
+			for (int j = 0; j < 50; j++) {
+				int k;
+				// New game (we go up to 1000 moves)
+				B = new GameState(3, 5);
+				for (k = 1; k <= 1000; k++) {
+					if (B.mustLose())
+						break;
+					if(k%2 == 0)
+						p = P0.makeChoice(B);
+					else
+						p = P1.makeChoice(B);
+					B.eat(p);
+				}
+				// Who wins ?
+				if(k%2 == 1) {
+					win0++;
+					winner = name0;
+				} 
+				else { 
+					win1++;
+					winner = name1;
+				}
+				//System.out.println(winner + " wins");
+				
 			}
-			winner = win1 > win2 ? name1 : name2;
-			System.out.println("Total : " + win1 + "/" + win2);
-			if (win1 == win2)
+			// Total of the 20 games = result of the duel
+			winner = win0 > win1 ? name0 : name1;
+			System.out.println("Total : " + win0 + "/" + win1);
+			if (win0 == win1)
 				System.out.println("Par");
 			else
 				System.out.println("The winner is " + winner);
