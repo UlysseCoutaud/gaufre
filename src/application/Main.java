@@ -14,8 +14,8 @@ public class Main implements Runnable
 
     // Properties
 
-    private static final int defaultXDim = 10;
-    private static final int defaultYDim = 10;
+    private static final int defaultXDim = 5;
+    private static final int defaultYDim = 5;
     private static final int defaultNbOfPlayers = 2;
 
     private static int			nbOfPlayers;

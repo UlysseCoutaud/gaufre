@@ -68,7 +68,7 @@ public class WaffleView extends JPanel implements MouseListener
 
 		engine.play(new Point(x, y));
 	}
-	public void mousePressed(MouseEvent e)	{mouseClicked(e);}
+	public void mousePressed(MouseEvent e)	{}
     public void mouseEntered(MouseEvent e)	{}
     public void mouseExited(MouseEvent e)	{}
     public void mouseReleased(MouseEvent e)	{}

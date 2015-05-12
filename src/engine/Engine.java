@@ -93,7 +93,8 @@ public class Engine {
 	}
 
 	private void chooseCell(Point p) {
-		pastStates.push(currentState);
+		futureStates.clear();
+		pastStates.push(currentState.cloneGameState());
 		currentState = currentState.cloneGameState();
 		currentState.currentPlayer = currentPlayer;
 		currentState.eat(p);
@@ -123,8 +124,10 @@ public class Engine {
 			Logger.logEngine("No Actions left to undo.");
 			return;
 		}
-		futureStates.push(currentState);
+		futureStates.push(currentState.cloneGameState());
 		currentState = pastStates.pop();
+		gui.update();
+		Logger.logEngine("ACTION UNDONE \n " + currentState.toString());
 	}
 
 	public void redo() {
@@ -132,8 +135,10 @@ public class Engine {
 			Logger.logEngine("No actions to redo.");
 			return;
 		}
-		pastStates.push(currentState);
+		pastStates.push(currentState.cloneGameState());
 		currentState = futureStates.pop();
+		gui.update();
+		Logger.logEngine("ACTION REDONE \n " + currentState.toString());
 	}
 
 	public boolean isUndoable() {
