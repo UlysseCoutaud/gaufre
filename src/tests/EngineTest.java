@@ -34,5 +34,8 @@ public class EngineTest {
                 engine.play(x, y);
             }
         }
+        
+        System.out.println("THE FUUL GAME !!!");
+        engine.printPast();
     }
 }

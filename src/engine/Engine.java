@@ -2,9 +2,12 @@
 package engine;
 
 import gui.GuiController;
+
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Stack;
+
 import player.Medium;
 import player.Player;
 import util.Logger;
@@ -151,4 +154,11 @@ public class Engine {
     public int getNbHumanPlayers() {
         return nbOfHumanPlayers;
     }
+
+	public void printPast() {
+		Iterator<GameState> it = pastStates.iterator();
+		while(it.hasNext()) {
+			System.out.println(it.next().toString() + "\n\n");
+		}
+	}
 }
