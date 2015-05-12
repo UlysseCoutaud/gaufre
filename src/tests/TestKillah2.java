@@ -11,10 +11,10 @@ public class TestKillah2 {
 
 	public static void main(String[] args) {
 		Logger.enableIaLog = false ;
-		GameState B = new GameState(4, 4);
+		GameState B = new GameState(2, 2);
 		Player P = new Killah();
 		Point p;
-		System.out.println(B);
+		//System.out.println(B);
 		System.out.println("=====================");
 		System.out.println("=====================");
 		for (int i = 1; i <= 100; i++) {

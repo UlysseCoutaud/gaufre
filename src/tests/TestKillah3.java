@@ -27,8 +27,8 @@ public class TestKillah3 {
 		P1 = new Killah();
 
 
-		B = new GameState(4, 4);
-		k=1;
+		B = new GameState(3,3);
+		k=0;
 		while (! B.mustLose()) {
 			k++;
 			if(k%2 == 0){
@@ -40,7 +40,7 @@ public class TestKillah3 {
 				p = P0.makeChoice(B);
 			}
 			B.eat(p);
-			System.out.println(B);
+			System.out.println("I choosed "+p+B);
 		}
 		
 		// Who wins ?
