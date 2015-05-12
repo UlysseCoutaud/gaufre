@@ -29,3 +29,7 @@ hs_err_pid*
 .settings/
 .metadata
 RemoteSystemsTempFiles
+
+
+.settings/org.eclipse.jdt.ui.prefs
+.gitignore
