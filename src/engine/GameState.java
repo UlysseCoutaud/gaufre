@@ -182,8 +182,14 @@ public class GameState {
 		}
 
 		public boolean hasNext() {
-			for (int i = x; i < width; i++) {
-				for (int j = y; j < height; j++) {
+			for(int i = x + 1; i < width; i++) {
+				if(isWaffle(i, y)) {
+					nextX = i;
+					return true;
+				}
+			}
+			for (int i = 0; i < width; i++) {
+				for (int j = y + 1; j < height; j++) {
 					if (isWaffle(i, j)) {
 						nextX = i;
 						nextY = j;
