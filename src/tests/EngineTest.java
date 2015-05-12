@@ -9,9 +9,12 @@ import engine.Engine;
 public class EngineTest {
 
 	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		System.out.print("number of human players : ");
+		int nbOfPlayers = Integer.valueOf(br.readLine());
+		
 		Engine engine;
 
-		int nbOfPlayers = 2;
 		int width = 10, height = 10;
 
 		engine = new Engine(width, height, nbOfPlayers);
@@ -19,16 +22,12 @@ public class EngineTest {
 		if (nbOfPlayers == 0) {
 			engine.startAIMatch();
 		} else {
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					System.in));
 			while (!engine.getCurrentGameState().mustLose()) {
 				System.out.println("\n # Player " + engine.getCurrentPlayer() + " :");
 				System.out.print("  -  choose x : ");
-				String str = br.readLine();
-				int x = Integer.valueOf(str);
+				int x = Integer.valueOf(br.readLine());
 				System.out.print("  -  choose y : ");
-				str = br.readLine();
-				int y = Integer.valueOf(str);
+				int y = Integer.valueOf(br.readLine());
 				engine.play(x, y);
 			}
 		}

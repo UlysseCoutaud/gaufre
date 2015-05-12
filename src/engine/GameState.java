@@ -34,7 +34,7 @@ public class GameState {
 	 * Returns true if the only square left is poisoned
 	 */
 	public boolean mustLose() {
-		return height > 1 && isEaten(0, 1) && width > 1 && isEaten(1, 0);
+		return height > 1 && isEaten(0, 1) && width > 1 && isEaten(0, 1);
 	}
 
 	public boolean isWaffle(int i, int j) {
@@ -214,14 +214,19 @@ public class GameState {
 	}
 
 	public boolean equals(Object o) {
-		if(!(o instanceof GameState)) return false;
-		GameState gs = (GameState)o;
-		if(gs.currentPlayer != currentPlayer) return false;
-		if(gs.width != width) return false;
-		if(gs.height != height) return false;
-		for(int i = 0; i < width; i++) {
-			for(int j = 0; j < height; j++) {
-				if(gs.board[i][j] != board[i][j]) return false;
+		if (!(o instanceof GameState))
+			return false;
+		GameState gs = (GameState) o;
+		if (gs.currentPlayer != currentPlayer)
+			return false;
+		if (gs.width != width)
+			return false;
+		if (gs.height != height)
+			return false;
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				if (gs.board[i][j] != board[i][j])
+					return false;
 			}
 		}
 		return true;
