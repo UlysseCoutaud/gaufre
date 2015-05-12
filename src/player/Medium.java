@@ -73,7 +73,7 @@ public class Medium implements Player {
 	 */
 	private boolean willLoseNextTurn(GameState currentConfig, Point p) {
 		// Is this bite poisoned ?
-		if (!currentConfig.isSafe(p.x, p.y))
+		if (!currentConfig.isSafeToEat(p.x, p.y))
 			return true;
 
 		// Will the opponent win if I choose this ?

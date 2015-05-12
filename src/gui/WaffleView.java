@@ -63,7 +63,10 @@ public class WaffleView extends JPanel implements MouseListener
 // --------------------------------------------
 	public void mouseClicked(MouseEvent e)
 	{
-throw new RuntimeException("A faireeeeeeeeeeeee########################");
+		int x = (e.getX() - xMin) / cellWidth;
+		int y = (e.getY() - yMin) / cellHeight;
+
+		engine.play(new Point(x, y));
 	}
 	public void mousePressed(MouseEvent e)	{mouseClicked(e);}
     public void mouseEntered(MouseEvent e)	{}
@@ -92,9 +95,9 @@ throw new RuntimeException("A faireeeeeeeeeeeee########################");
 			for (int y=0; y<gs.height; y++)
 			{
 				yp = yMin + y*cellHeight;
-				if		(gs.isSafe(x, y))	drawWaffle		(xp, yp, drawable);
-				else if	(gs.isEaten(x, y))	drawEatenWaffle	(xp, yp, drawable);
-				else if	(gs.isPoison(x, y))	drawPoison		(xp, yp, drawable);
+				if		(gs.isSafeToEat(x, y))	drawWaffle		(xp, yp, drawable);
+				else if	(gs.isEaten(x, y))		drawEatenWaffle	(xp, yp, drawable);
+				else if	(gs.isPoison(x, y))		drawPoison		(xp, yp, drawable);
 				else throw new RuntimeException("Unknown case");
 			}
 		}

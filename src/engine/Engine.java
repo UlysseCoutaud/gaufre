@@ -55,7 +55,7 @@ public class Engine {
 		updateGuiIfAny();
 		checkForDefeat();
 
-		if (isComputerPlayer(currentPlayer)) {
+		if (isComputerPlayer(currentPlayer) && !currentState.mustLose()) {
 			playCPU();
 			passToNextPlayer();
 			updateGuiIfAny();
@@ -87,14 +87,8 @@ public class Engine {
 	}
 
 	private void playCPU() {
-		Player cpu = solveurList.get(currentPlayer - nbOfHumanPlayers - 1); // should
-																			// always
-																			// be
-																			// 1
-																			// but
-																			// generic
-																			// this
-																			// way
+		// should always be 1 but generic this way
+		Player cpu = solveurList.get(currentPlayer - nbOfHumanPlayers - 1);
 		Point p = cpu.makeChoice(currentState);
 		chooseCell(p);
 	}
@@ -102,6 +96,7 @@ public class Engine {
 	private void chooseCell(Point p) {
 		pastStates.push(currentState);
 		currentState = currentState.cloneGameState();
+		currentState.currentPlayer = currentPlayer;
 		currentState.eat(p);
 		Logger.logEngine(currentState.toString());
 	}

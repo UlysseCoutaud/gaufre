@@ -50,6 +50,7 @@ public class GuiController implements ComponentListener
 // --------------------------------------------
 	public GuiController(Engine engine) throws IOException
 	{
+		this.engine = engine;
 		int w	= (int)(partitionW	* defaultFrameWidth);								// Largeur du panneau principal
 		int h	= defaultFrameHeight - secureH;											// Hauteur du panneau principale
 		int h1	= (int)(partitionH1	* h);												// Hauteur du panneau lateral haut
@@ -89,7 +90,9 @@ public class GuiController implements ComponentListener
 			case 2: infoView.setText(this.twoPlayersText);	break
 			default: throw new RuntimeException("Undefined nbrPlayer value: " + gs.getNbPlayer());
 		}
-*/	}
+*/
+////		afficher une victoire
+	}
 
 // --------------------------------------------
 // Resizer:
