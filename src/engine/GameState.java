@@ -81,7 +81,6 @@ public class GameState {
 				remove(i, j);
 			}
 		}
-		currentPlayer = currentPlayer == 1 ? 2 : 1;
 	}
 
 	public void eat(Point p) {
