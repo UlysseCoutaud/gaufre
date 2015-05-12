@@ -31,8 +31,7 @@ public class Engine {
 
 		solveurList = new ArrayList<Player>();
 		for (int i = nbOfHumanPlayers; i < 2; i++) {
-			solveurList.add(new Medium()); // TODO faire en sorte qu'on puisse
-											// choisir
+			solveurList.add(new Medium()); // TODO faire en sorte qu'on puisse choisir
 		}
 	}
 
@@ -119,7 +118,7 @@ public class Engine {
 
 	// Undo / redo
 
-	public void undoAction() {
+	public void undo() {
 		if (!isUndoable()) {
 			Logger.logEngine("No Actions left to undo.");
 			return;
@@ -128,7 +127,7 @@ public class Engine {
 		currentState = pastStates.pop();
 	}
 
-	public void redoAction() {
+	public void redo() {
 		if (!isRedoable()) {
 			Logger.logEngine("No actions to redo.");
 			return;

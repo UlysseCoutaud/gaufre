@@ -141,9 +141,9 @@ public class GameState {
 		}
 		string += "+\n";
 
-		for (int i = 0; i < board.length; i++) {
+		for (int j = 0; j < board.length; j++) {
 			string += "| ";
-			for (int j = 0; j < board[0].length; j++) {
+			for (int i = 0; i < board[0].length; i++) {
 				Cell cell = board[i][j];
 				switch (cell) {
 				case POISON:
