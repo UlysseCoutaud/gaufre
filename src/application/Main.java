@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 
 import engine.Engine;
 import gui.GuiController;
+import gui.RestartInterface;
 import util.Logger;
 
 public class Main implements Runnable
@@ -33,7 +34,7 @@ public class Main implements Runnable
         engine.setIHM(guiController);
 
         if (nbOfPlayers == 0)	engine.startAIMatch();
-
+        new RestartInterface().show();
 		Logger.logApp("App did launch");
 	}
 
