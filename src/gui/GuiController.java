@@ -43,6 +43,7 @@ public class GuiController implements ComponentListener
 	private JSplitPane 						frameOrganizer1;
 	private JSplitPane 						frameOrganizer2;
 	private JSplitPane 						frameOrganizer3;
+	private String[]						playersName = {"1", "2"};
 
 	private Engine							engine;
 	public boolean							isEnd;
@@ -61,7 +62,7 @@ public class GuiController implements ComponentListener
 		this.waffleView		= new WaffleView(w, h, engine);								// Initialisation du panneaux principal
 		this.nameView		= new JTextPane();						 	  				// Initialisation du panneaux lateral haut
 		this.infoView		= new JTextPane();											// Initialisation du panneaux lateral centrale
-		this.controlWindow	= new ControlWindow(defaultFrameWidth-w, h-(h1+h2), engine);// Initialisation du panneaux lateral bas
+		this.controlWindow	= new ControlWindow(defaultFrameWidth-w, h-(h1+h2), engine, this);// Initialisation du panneaux lateral bas
 		this.setupMenuBar(); 						          							// Initialisation du menuBar
 
 		this.resize(defaultFrameWidth, defaultFrameHeight);
@@ -80,7 +81,7 @@ public class GuiController implements ComponentListener
 		GameState gs = engine.getCurrentGameState();
 		this.waffleView		.update();
 		this.controlWindow	.update();
-		this.nameView		.setText(playerText+ engine.getCurrentPlayer());
+		this.nameView		.setText(playerText+ playersName[engine.getCurrentPlayer()-1]);
 		this.updateMenuBar();
 /*		switch(engine.getNbHumanPlayers())
 		{
@@ -100,6 +101,12 @@ public class GuiController implements ComponentListener
 			JOptionPane.showMessageDialog(null, looseText + engine.getCurrentPlayer());
 			infoView.setText(endInfoText);
 		}
+	}
+	public void setPlayersName(String name1, String name2)
+	{
+		this.playersName[0] = name1;
+		this.playersName[1] = name2;
+		this.nameView.setText(playerText+ playersName[engine.getCurrentPlayer()-1]);
 	}
 
 // --------------------------------------------

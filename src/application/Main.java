@@ -34,7 +34,7 @@ public class Main implements Runnable
         engine.setIHM(guiController);
 
         if (nbOfPlayers == 0)	engine.startAIMatch();
-        new RestartInterface().show();
+        new RestartInterface(engine, guiController).show();
 		Logger.logApp("App did launch");
 	}
 

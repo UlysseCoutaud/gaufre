@@ -22,10 +22,10 @@ public class Engine {
     private GuiController gui = null;
 
     public Engine(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
-    	restart(boardWidth, boardHeight, nbOfHumanPlayers);
+    	startNewGame(boardWidth, boardHeight, nbOfHumanPlayers);
     }
-    
-    public void restart(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
+
+    public void startNewGame(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
         pastStates = new Stack<GameState>();
         futureStates = new Stack<GameState>();
         currentState = new GameState(boardWidth, boardHeight);
