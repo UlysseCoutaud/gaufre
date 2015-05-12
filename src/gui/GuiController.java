@@ -8,61 +8,58 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 
 import engine.Engine;
 import engine.GameState;
 
-public class GuiController implements ComponentListener {
-	// --------------------------------------------
-	// Attributs:
-	// --------------------------------------------
-	private final static String frameName = "Waffle Game";
-	private final static String playerText = "Player: ";
-	private final static int defaultFrameWidth = 800;
-	private final static int defaultFrameHeight = 800;
-	private final static int secureH = 65;
-	private final static double partitionW = 7 / 10.; // Division horizontal de
-														// la fenetre
-	private final static double partitionH1 = 1. / 10; // Division verticale de
-														// la fenetre haute
-	private final static double partitionH2 = 5. / 10; // Division verticale de
-														// la fenetre basse
+public class GuiController implements ComponentListener
+{
+// --------------------------------------------
+// Attributs:
+// --------------------------------------------
+	private final static String				frameName			= "Waffle Game";
+	private final static String				playerText			= "Player: ";
+	private final static String				looseText			= "The looser is: ";
+	private final static int				defaultFrameWidth	= 800;
+	private final static int				defaultFrameHeight	= 800;
+	private final static int				secureH				= 65;
+	private final static double				partitionW			= 7/10.;	// Division horizontal de la fenetre
+	private final static double				partitionH1			= 1./10;	// Division verticale de la fenetre haute
+	private final static double				partitionH2			= 5./10;	// Division verticale de la fenetre basse
 
-	private JFrame frame; // Parametres graphiques
-	private JMenuBar menuBar;
-	private WaffleView waffleView;
-	private JTextPane nameView;
-	private JTextPane infoView;
-	private JMenuItem undoMenuItem;
-	private JMenuItem redoMenuItem;
-	private ControlWindow controlWindow;
-	private JSplitPane frameOrganizer1;
-	private JSplitPane frameOrganizer2;
-	private JSplitPane frameOrganizer3;
+	private JFrame							frame;							// Parametres graphiques
+	private JMenuBar						menuBar;
+	private WaffleView						waffleView;
+	private JTextPane						nameView;
+	private JTextPane						infoView;
+    private JMenuItem						undoMenuItem;
+    private JMenuItem						redoMenuItem;
+	private ControlWindow					controlWindow;
+	private JSplitPane 						frameOrganizer1;
+	private JSplitPane 						frameOrganizer2;
+	private JSplitPane 						frameOrganizer3;
 
-	private Engine engine;
+	private Engine							engine;
 
-	// --------------------------------------------
-	// Constructeur:
-	// --------------------------------------------
-	public GuiController(Engine engine) throws IOException {
-		int w = (int) (partitionW * defaultFrameWidth); // Largeur du panneau
-														// principal
-		int h = defaultFrameHeight - secureH; // Hauteur du panneau principale
-		int h1 = (int) (partitionH1 * h); // Hauteur du panneau lateral haut
-		int h2 = (int) (partitionH2 * h); // Hauteur du panneau lateral centrale
+// --------------------------------------------
+// Constructeur:
+// --------------------------------------------
+	public GuiController(Engine engine) throws IOException
+	{
+		this.engine = engine;
+		int w	= (int)(partitionW	* defaultFrameWidth);								// Largeur du panneau principal
+		int h	= defaultFrameHeight - secureH;											// Hauteur du panneau principale
+		int h1	= (int)(partitionH1	* h);												// Hauteur du panneau lateral haut
+		int h2	= (int)(partitionH2	* h);												// Hauteur du panneau lateral centrale
 
-		this.waffleView = new WaffleView(w, h, engine); // Initialisation du
-														// panneaux principal
-		this.nameView = new JTextPane(); // Initialisation du panneaux lateral
-											// haut
-		this.infoView = new JTextPane(); // Initialisation du panneaux lateral
-											// centrale
-		this.controlWindow = new ControlWindow(defaultFrameWidth - w, h
-				- (h1 + h2), engine);// Initialisation du panneaux lateral bas
-		this.setupMenuBar(); // Initialisation du menuBar
+		this.waffleView		= new WaffleView(w, h, engine);								// Initialisation du panneaux principal
+		this.nameView		= new JTextPane();						 	  				// Initialisation du panneaux lateral haut
+		this.infoView		= new JTextPane();											// Initialisation du panneaux lateral centrale
+		this.controlWindow	= new ControlWindow(defaultFrameWidth-w, h-(h1+h2), engine);// Initialisation du panneaux lateral bas
+		this.setupMenuBar(); 						          							// Initialisation du menuBar
 
 		this.resize(defaultFrameWidth, defaultFrameHeight);
 
@@ -77,26 +74,33 @@ public class GuiController implements ComponentListener {
 
 	public void update() {
 		GameState gs = engine.getCurrentGameState();
+		this.waffleView		.update();
+		this.controlWindow	.update();
+		this.nameView		.setText(playerText+ engine.getCurrentPlayer());
+/*		switch(engine.getNbHumanPlayers())
+		{
+			case 0: infoView.setText(twoAIText);		break;
+			case 1:
+				String text = oneAIText;
+				if (engine.getCurrentPlayer() == 1)	text += playerText+ engine.getCurrentPlayer();
+				else								text += this.IAText;
+				infoView.setText(text);
+				break;
+			case 2: infoView.setText(this.twoPlayersText);	break
+			default: throw new RuntimeException("Undefined nbrPlayer value: " + gs.getNbPlayer());
+		}
+*/
+		if (gs.mustLose()) JOptionPane.showMessageDialog(null, looseText + engine.getCurrentPlayer());
+////		afficher une victoire
+	}
 
-		this.waffleView.update();
-		this.controlWindow.update();
-		this.nameView.setText(playerText + engine.getCurrentPlayer());
-		/*
-		 * switch(engine.getNbHumanPlayers()) { case 0:
-		 * infoView.setText(twoAIText); break; case 1: String text = oneAIText;
-		 * if (engine.getCurrentPlayer() == 1) text += playerText+
-		 * engine.getCurrentPlayer(); else text += this.IAText;
-		 * infoView.setText(text); break; case 2:
-		 * infoView.setText(this.twoPlayersText); break default: throw new
-		 * RuntimeException("Undefined nbrPlayer value: " + gs.getNbPlayer()); }
-		 */}
-
-	// --------------------------------------------
-	// Resizer:
-	// --------------------------------------------
-	public void componentResized(ComponentEvent e) {
-		int width = e.getComponent().getWidth();
-		int height = e.getComponent().getHeight();
+// --------------------------------------------
+// Resizer:
+// --------------------------------------------
+	public void componentResized(ComponentEvent e)
+	{
+		int width 	= e.getComponent().getWidth();
+		int height 	= e.getComponent().getHeight();
 		this.resize(width, height);
 	}
 

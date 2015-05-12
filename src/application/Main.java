@@ -4,17 +4,20 @@ import java.io.IOException;
 
 import javax.swing.SwingUtilities;
 
-import util.Logger;
 import engine.Engine;
 import gui.GuiController;
+import util.Logger;
 
-public class Main implements Runnable {
+public class Main implements Runnable
+{
 
 	// Properties
 
-	private static final int defaultXDim = 10;
-	private static final int defaultYDim = 10;
-	private static final int defaultNbPlayers = 2;
+    private static final int defaultXDim = 5;
+    private static final int defaultYDim = 5;
+    private static final int defaultNbOfPlayers = 2;
+
+    private static int			nbOfPlayers;
 
 	// Runnable
 
@@ -22,26 +25,23 @@ public class Main implements Runnable {
 	public void run() {
 		Logger.logApp("App will launch");
 
-		int nbOfPlayers = defaultNbPlayers;
-		Engine engine = new Engine(defaultXDim, defaultYDim, nbOfPlayers);
-		GuiController guiController = null;
-		try {
-			guiController = new GuiController(engine);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		engine.setIHM(guiController);
+        Engine engine = new Engine(defaultXDim, defaultYDim, nbOfPlayers);
+        GuiController guiController = null;
 
-		if (nbOfPlayers == 0) {
-			engine.startAIMatch();
-		}
+        try						{guiController = new GuiController(engine);}
+		catch (IOException e)	{e.printStackTrace(); System.exit(0);}
+        engine.setIHM(guiController);
+
+        if (nbOfPlayers == 0)	engine.startAIMatch();
 
 		Logger.logApp("App did launch");
 	}
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Main());
-	}
+    public static void main(String[] args)
+    {
+    	try					{nbOfPlayers = Integer.parseInt(args[0]) % 3;}
+    	catch(Exception e)	{nbOfPlayers = defaultNbOfPlayers;}
 
+    	SwingUtilities.invokeLater(new Main());
+    }
 }

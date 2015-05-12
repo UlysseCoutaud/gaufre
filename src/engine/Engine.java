@@ -31,8 +31,7 @@ public class Engine {
 
 		solveurList = new ArrayList<Player>();
 		for (int i = nbOfHumanPlayers; i < 2; i++) {
-			solveurList.add(new Medium()); // TODO faire en sorte qu'on puisse
-											// choisir
+			solveurList.add(new Medium()); // TODO faire en sorte qu'on puisse choisir
 		}
 	}
 
@@ -55,7 +54,7 @@ public class Engine {
 		updateGuiIfAny();
 		checkForDefeat();
 
-		if (isComputerPlayer(currentPlayer)) {
+		if (isComputerPlayer(currentPlayer) && !currentState.mustLose()) {
 			playCPU();
 			passToNextPlayer();
 			updateGuiIfAny();
@@ -87,20 +86,15 @@ public class Engine {
 	}
 
 	private void playCPU() {
-		Player cpu = solveurList.get(currentPlayer - nbOfHumanPlayers - 1); // should
-																			// always
-																			// be
-																			// 1
-																			// but
-																			// generic
-																			// this
-																			// way
+		// should always be 1 but generic this way
+		Player cpu = solveurList.get(currentPlayer - nbOfHumanPlayers - 1);
 		Point p = cpu.makeChoice(currentState);
 		chooseCell(p);
 	}
 
 	private void chooseCell(Point p) {
-		pastStates.push(currentState);
+		futureStates.clear();
+		pastStates.push(currentState.cloneGameState());
 		currentState = currentState.cloneGameState();
 		currentState.currentPlayer = currentPlayer;
 		currentState.eat(p);
@@ -125,22 +119,26 @@ public class Engine {
 
 	// Undo / redo
 
-	public void undoAction() {
+	public void undo() {
 		if (!isUndoable()) {
 			Logger.logEngine("No Actions left to undo.");
 			return;
 		}
-		futureStates.push(currentState);
+		futureStates.push(currentState.cloneGameState());
 		currentState = pastStates.pop();
+		gui.update();
+		Logger.logEngine("ACTION UNDONE \n " + currentState.toString());
 	}
 
-	public void redoAction() {
+	public void redo() {
 		if (!isRedoable()) {
 			Logger.logEngine("No actions to redo.");
 			return;
 		}
-		pastStates.push(currentState);
+		pastStates.push(currentState.cloneGameState());
 		currentState = futureStates.pop();
+		gui.update();
+		Logger.logEngine("ACTION REDONE \n " + currentState.toString());
 	}
 
 	public boolean isUndoable() {

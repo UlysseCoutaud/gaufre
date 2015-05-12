@@ -33,18 +33,17 @@ public class ActionPerformer implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		Class<?> targetClass = this.target.getClass();
-		Class<ActionEvent> argClass = ActionEvent.class;
 		Method method;
 
 		try {
-			method = targetClass.getDeclaredMethod(this.action, argClass);
+			method = targetClass.getDeclaredMethod(this.action);
 		} catch (NoSuchMethodException exception) {
 			System.out.println(exception);
 			return;
 		}
 
 		try {
-			method.invoke(this.target, e);
+			method.invoke(this.target);
 		} catch (IllegalArgumentException exception) {
 			System.out.println(exception);
 		} catch (IllegalAccessException exception) {
