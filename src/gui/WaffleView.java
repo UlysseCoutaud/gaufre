@@ -16,33 +16,35 @@ import engine.Engine;
 import engine.GameState;
 
 @SuppressWarnings("serial")
-public class WaffleView extends JPanel implements MouseListener {
-	// --------------------------------------------
-	// Attributs:
-	// --------------------------------------------
-	private final String poisonImagePath = "images/poison.png";
-	private final float paddingWidth = (float) (1. / 10.);
-	private final float paddingHeight = (float) (1. / 10.);
-	private final float waffleShadeProportion = (float) (1. / 10.);
-	private final int nbrWaffleShades = 5;
+public class WaffleView extends JPanel implements MouseListener
+{
+// --------------------------------------------
+// Attributs:
+// --------------------------------------------
+	private final String poisonImagePath		= "images/poison.png";
+	private final float paddingWidth			= (float) (1. / 10.);
+	private final float paddingHeight			= (float) (1. / 10.);
+	private final float waffleShadeProportion	= (float) (1. / 10.);
+	private final int nbrWaffleShades			= 5;
 
-	private Color backgroundColor = Color.WHITE;
-	private Color waffleColor = new Color(255, 204, 102);
-	private Color borderOutColor = new Color(51, 0, 0);
-	private Color borderInColor = new Color(255, 102, 0);
+	private Color backgroundColor				= Color.WHITE;
+	private Color waffleColor					= new Color(255, 204, 102);
+	private Color borderOutColor				= new Color(51, 0, 0);
+	private Color borderInColor					= new Color(255, 102, 0);
 
 	private BufferedImage image;
 	private BufferedImage poisonImage;
 	private Engine engine;
-	private int cellWidth; // Cell size (px)
+	private int cellWidth;						// Cell size (px)
 	private int cellHeight;
-	private int xMin; // Most left and high waffle point (px)
+	private int xMin;							// Most left and high waffle point (px)
 	private int yMin;
 
-	// --------------------------------------------
-	// Constructeur:
-	// --------------------------------------------
-	public WaffleView(int width, int height, Engine engine) throws IOException {
+// --------------------------------------------
+// Constructeur:
+// --------------------------------------------
+	public WaffleView(int width, int height, Engine engine) throws IOException
+	{
 		this.engine = engine;
 		this.poisonImage = ImageIO.read(new File(poisonImagePath));
 
@@ -70,7 +72,8 @@ public class WaffleView extends JPanel implements MouseListener {
 // Window:
 // --------------------------------------------
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g)
+	{
 		g.drawImage(this.image, UNDEFINED_CONDITION, UNDEFINED_CONDITION, null);
 	}
 	public int getWidth()	{return this.image.getWidth();}

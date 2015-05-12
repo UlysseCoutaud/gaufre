@@ -45,14 +45,13 @@ public class GuiController implements ComponentListener
 	private JSplitPane 						frameOrganizer3;
 
 	private Engine							engine;
+	public boolean							isEnd;
 
 // --------------------------------------------
 // Constructeur:
 // --------------------------------------------
 	public GuiController(Engine engine) throws IOException
 	{
-System.out.println(engine.isRedoable());
-System.out.println(engine.isUndoable());
 		this.engine = engine;
 		int w	= (int)(partitionW	* defaultFrameWidth);								// Largeur du panneau principal
 		int h	= defaultFrameHeight - secureH;											// Hauteur du panneau principale
@@ -69,11 +68,11 @@ System.out.println(engine.isUndoable());
 
 		this.frame = new JFrame(frameName);
 		this.frame.setSize(defaultFrameWidth, defaultFrameHeight);
-		this.frame.setJMenuBar(menuBar); // Placer l'ensemble des pan dans la
-											// fenetre
+		this.frame.setJMenuBar(menuBar);												// Placer l'ensemble des pan dans la fenetre
 		this.frame.add(frameOrganizer3);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.setVisible(true);
+		this.update();
 	}
 
 	public void update()
@@ -113,25 +112,20 @@ System.out.println(engine.isUndoable());
 		this.resize(width, height);
 	}
 
-	private void resize(int width, int height) {
-		int w = (int) (partitionW * width); // Largeur du panneau principal
-		int h = height - secureH; // Hauteur du panneau principale
-		int h1 = (int) (partitionH1 * h); // Hauteur du panneau lateral haut
-		int h2 = (int) (partitionH2 * h); // Hauteur du panneau lateral centrale
+	private void resize(int width, int height)
+	{
+		int w = (int) (partitionW * width); 					// Largeur du panneau principal
+		int h = height - secureH;								// Hauteur du panneau principale
+		int h1 = (int) (partitionH1 * h);						// Hauteur du panneau lateral haut
+		int h2 = (int) (partitionH2 * h);						// Hauteur du panneau lateral centrale
 
 		this.waffleView.resize(w, h);
-		this.frameOrganizer1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
-				infoView, controlWindow);
-		this.frameOrganizer2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
-				nameView, frameOrganizer1);
-		this.frameOrganizer3 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				true, waffleView, frameOrganizer2);
-		this.frameOrganizer1.setDividerLocation(h2); // Placer le separateur de
-														// fenetres vertical
-		this.frameOrganizer2.setDividerLocation(h1); // Placer le separateur de
-														// fenetres vertical
-		this.frameOrganizer3.setDividerLocation(w); // Placer le separateur de
-													// fenetres horizontal
+		this.frameOrganizer1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, infoView, controlWindow);
+		this.frameOrganizer2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, nameView, frameOrganizer1);
+		this.frameOrganizer3 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, waffleView, frameOrganizer2);
+		this.frameOrganizer1.setDividerLocation(h2);			// Placer le separateur de fenetres vertical
+		this.frameOrganizer2.setDividerLocation(h1);			// Placer le separateur de fenetres vertical
+		this.frameOrganizer3.setDividerLocation(w);				// Placer le separateur de fenetres horizontal
 		this.frameOrganizer1.setDividerSize(12);
 		this.frameOrganizer2.setDividerSize(12);
 		this.frameOrganizer3.setDividerSize(12);
@@ -146,12 +140,12 @@ System.out.println(engine.isUndoable());
 // ---------------------------------------------
 // Menu Bar
 // ---------------------------------------------
-    private JMenuItem createMenuItem(String title, String action)
-    {
-        JMenuItem menuItem = new JMenuItem(title);
-        menuItem.addActionListener(new ActionPerformer(this.engine, action));
-        return menuItem;
-    }
+	private JMenuItem createMenuItem(String title, String action)
+	{
+		JMenuItem menuItem = new JMenuItem(title);
+		menuItem.addActionListener(new ActionPerformer(this.engine, action));
+		return menuItem;
+	}
 
     private void setupMenuBar()
     {
@@ -171,6 +165,7 @@ System.out.println(engine.isUndoable());
         this.redoMenuItem = this.createMenuItem("Redo", "redo");
         editMenu.add(this.redoMenuItem);
         this.menuBar.add(editMenu);
+        updateMenuBar();
     }
     private void updateMenuBar()
     {
