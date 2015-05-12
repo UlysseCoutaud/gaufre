@@ -9,10 +9,10 @@ public class TestAIDuels {
 
 	public static void main(String[] args) {
 		GameState B;
-		Player P0, P1;
+		Player P0 = null, P1 = null;
 		Point p;
 		int win0, win1;
-		String dumb, medium, killah, winner, name0, name1;
+		String dumb, medium, killah, winner, name0 = null, name1 = null;
 		dumb = "Easy";
 		medium = "Medium";
 		killah = "Difficult";
@@ -21,7 +21,7 @@ public class TestAIDuels {
 		 * Each of the 3 players fights against the 2 others
 		 * They first begin the matches, then play second
 		 */
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 6; i++) {
 			switch (i) {
 			case 0:
 				name0 = dumb;
@@ -53,7 +53,7 @@ public class TestAIDuels {
 				P0 = new Medium();
 				P1 = new Killah();
 				break;
-			default:
+			case 5:
 				name0 = killah;
 				name1 = medium;
 				P0 = new Killah();
@@ -88,7 +88,7 @@ public class TestAIDuels {
 				//System.out.println(winner + " wins");
 				
 			}
-			// Total of the 20 games = result of the duel
+			// Total of the 50 games = result of the duel
 			winner = win0 > win1 ? name0 : name1;
 			System.out.println("Total : " + win0 + "/" + win1);
 			if (win0 == win1)
