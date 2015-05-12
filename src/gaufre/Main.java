@@ -2,6 +2,8 @@ package gaufre;
 
 import ihm.GuiController;
 
+import java.io.IOException;
+
 import javax.swing.SwingUtilities;
 
 import engine.Engine;
@@ -26,9 +28,13 @@ public class Main implements Runnable {
 		int nbOfPlayers = defaultNbPlayers;
 
 		engine = new Engine(defaultXDim, defaultYDim, defaultNbPlayers);
-		ihm = new GuiController(defaultXDim, defaultYDim, engine);
-
-		engine.setIHM(ihm);
+		try {
+			ihm = new GuiController(engine);
+			engine.setIHM(ihm);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if (nbOfPlayers == 0) {
 			engine.startAIMatch();
