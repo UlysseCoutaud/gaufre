@@ -14,7 +14,8 @@ public class Killah implements Player {
 	private final Boolean nodeOR = false;
 	private final Boolean killahPlay = true;
 	private final Boolean opponentPlay = false;
-
+	
+	
 	public class couplePointsPerdGagne {
 		Boolean value;
 		Point point;
@@ -39,7 +40,6 @@ public class Killah implements Player {
 			this.configuration = myLocalConfiguration;
 			this.type = type;
 		}
-
 		/*
 		 * Calcule si le noeud est perdant ou gagnant en fonction de son type
 		 * (noeud ET noeud OU)
@@ -60,10 +60,16 @@ public class Killah implements Player {
 			}
 		}
 
+		/*
+		 * Renvoi la valeur du noeud (perdant ou gagnant pour killah)
+		 */
 		public Boolean getValue() {
 			return this.value;
 		}
-
+		
+		/*
+		 * Choisi un noeud gagnant (avec aleatoire)
+		 */
 		public void setChoice() {
 			Random rand = new Random();
 			int tirage = rand.nextInt(this.tablePerdGagne.size());
@@ -80,6 +86,10 @@ public class Killah implements Player {
 		}
 	}
 
+	/*
+	 * Envoi un choix parmi les noeuds gagnants
+	 * A corriger: si pas de noeuds gagnants donner le noeuds le meilleur
+	 */
 	public node gaufreMinMax(GameState currentConfig, boolean joueur) {
 		node currentNode;
 		node sonNode;
