@@ -110,4 +110,10 @@ public class GuiController implements ComponentListener {
 
 	public void componentShown(ComponentEvent arg0) {
 	}
+
+	public void updateYourself() {
+		// TODO Auto-generated method stub
+		// TODO c'est la methode appelee par le moteur, doit tout redessiner a
+		// partir du current state
+	}
 }

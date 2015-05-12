@@ -19,7 +19,7 @@ public class Medium implements Player {
 			return p; // Easy win
 		}
 
-		GameState nextConfig = currentConfig.cloneGameState();
+		GameState nextConfig = currentConfig.cloneState();
 		do { // Avoiding stupid choices
 			if (nextConfig.mustLose()) { // No choice remaining
 				System.out.println("Lose");
@@ -80,7 +80,7 @@ public class Medium implements Player {
 
 		// Will the opponent win if I choose this ?
 		Point opponentChoice;
-		GameState nextConfig = (GameState) currentConfig.cloneGameState();
+		GameState nextConfig = (GameState) currentConfig.cloneState();
 		nextConfig.eat(p);
 		opponentChoice = searchVictoryNextTurn(nextConfig);
 		return opponentChoice != null;
