@@ -1,4 +1,3 @@
-
 package application;
 
 import java.io.IOException;
@@ -6,13 +5,13 @@ import java.io.IOException;
 import javax.swing.SwingUtilities;
 
 import engine.Engine;
-import gui.*;
+import gui.GuiController;
 import util.Logger;
 
 public class Main implements Runnable
 {
 
-    // Properties
+	// Properties
 
     private static final int defaultXDim = 5;
     private static final int defaultYDim = 5;
@@ -20,11 +19,11 @@ public class Main implements Runnable
 
     private static int			nbOfPlayers;
 
-    // Runnable
+	// Runnable
 
-    @Override
-    public void run() {
-        Logger.logApp("App will launch");
+	@Override
+	public void run() {
+		Logger.logApp("App will launch");
 
         Engine engine = new Engine(defaultXDim, defaultYDim, nbOfPlayers);
         GuiController guiController = null;
@@ -35,8 +34,8 @@ public class Main implements Runnable
 
         if (nbOfPlayers == 0)	engine.startAIMatch();
 
-        Logger.logApp("App did launch");
-    }
+		Logger.logApp("App did launch");
+	}
 
     public static void main(String[] args)
     {
