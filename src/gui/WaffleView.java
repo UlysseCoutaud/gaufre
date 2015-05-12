@@ -6,17 +6,19 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
 import engine.Engine;
 import engine.GameState;
 
 @SuppressWarnings("serial")
-public class WaffleView extends JPanel implements MouseListener
+public class WaffleView extends JPanel implements MouseListener, MouseMotionListener
 {
 // --------------------------------------------
 // Attributs:
@@ -26,6 +28,7 @@ public class WaffleView extends JPanel implements MouseListener
 	private final float paddingHeight			= (float) (1. / 10.);
 	private final float waffleShadeProportion	= (float) (1. / 10.);
 	private final int nbrWaffleShades			= 5;
+	private final int dashLength				= 5;
 
 	private Color backgroundColor				= Color.WHITE;
 	private Color waffleColor					= new Color(255, 204, 102);
@@ -37,8 +40,9 @@ public class WaffleView extends JPanel implements MouseListener
 	private Engine engine;
 	private int cellWidth;						// Cell size (px)
 	private int cellHeight;
-	private int xMin;							// Most left and high waffle point (px)
+	private int xMin;							// leftmost and high waffle point (px)
 	private int yMin;
+	private Integer selectedX, selectedY;
 
 // --------------------------------------------
 // Constructeur:
@@ -49,6 +53,7 @@ public class WaffleView extends JPanel implements MouseListener
 		this.poisonImage = ImageIO.read(new File(poisonImagePath));
 
 		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 		this.setSize(width, height);
 		// The second part of the init is donne by this.resize
 	}
@@ -65,8 +70,18 @@ public class WaffleView extends JPanel implements MouseListener
 	}
 	public void mousePressed(MouseEvent e)	{}
     public void mouseEntered(MouseEvent e)	{}
-    public void mouseExited(MouseEvent e)	{}
+    public void mouseExited(MouseEvent e)
+    {
+    	selectedX = selectedY = null;
+    }
     public void mouseReleased(MouseEvent e)	{}
+	public void mouseDragged(MouseEvent e)	{}
+	public void mouseMoved(MouseEvent e)
+	{
+		selectedX = new Integer((e.getX() - xMin) / cellWidth);
+		selectedY = new Integer((e.getY() - yMin) / cellHeight);
+		update();
+	}
 
 // --------------------------------------------
 // Window:
@@ -82,20 +97,53 @@ public class WaffleView extends JPanel implements MouseListener
 	{
 		GameState gs		= engine.getCurrentGameState();
 		Graphics2D drawable = this.image.createGraphics();
-		int xp, yp;
-
+		int xp, yp, xmax, ymax;
+		
+		// Drawing the waffle
 		for (int x=0; x<gs.width; x++)
 		{
 			xp = xMin + x*cellWidth;
 			for (int y=0; y<gs.height; y++)
 			{
 				yp = yMin + y*cellHeight;
-				if		(gs.isSafeToEat(x, y))	drawWaffle		(xp, yp, drawable);
+				if (gs.isSafeToEat(x, y))		drawWaffle(xp, yp, drawable);
 				else if	(gs.isEaten(x, y))		drawEatenWaffle	(xp, yp, drawable);
 				else if	(gs.isPoison(x, y))		drawPoison		(xp, yp, drawable);
 				else throw new RuntimeException("Unknown case");
 			}
 		}
+		
+		// Tracing the selected zone
+		if(selectedX != null) {
+			if(selectedX != 0 || selectedY != 0) {
+				drawable.setPaint(backgroundColor);
+				xmax = getWidth() - xMin;
+				ymax = getHeight() - yMin;
+				xp = xMin + selectedX*cellWidth;
+				yp = yMin + selectedY*cellHeight;
+				while(xp<xmax) {
+					drawable.drawLine(xp, yp, xp+dashLength, yp);
+					xp += dashLength + 3;
+				}
+				xp = xMin + selectedX*cellWidth;			
+				while(yp<ymax) {
+					drawable.drawLine(xp, yp, xp, yp+dashLength);
+					yp += dashLength + 3;
+				}
+			}
+			else
+				drawable.setPaint(Color.RED);
+			
+			for (int x=selectedX; x<gs.width; x++) {
+				xp = xMin + x*cellWidth;
+				for (int y=selectedY; y<gs.height; y++)
+				{
+					yp = yMin + y*cellHeight;
+					stripeWaffle(xp, yp, drawable);
+				}
+			}
+		}
+		
 		this.repaint();
 	}
 	public void resize(int width, int height)
@@ -117,7 +165,7 @@ public class WaffleView extends JPanel implements MouseListener
 // Auxiliary methods:
 // --------------------------------------------
 	/**======================================================================
-	 * Draww a waffle cell described by the most left and high pixel (xp, yp)
+	 * Draws a waffle cell described by the leftmost and highest pixel (xp, yp)
 	 ========================================================================*/
 	private void drawWaffle(int xp, int yp, Graphics2D drawable)
 	{
@@ -128,8 +176,25 @@ public class WaffleView extends JPanel implements MouseListener
 		drawable.setColor(this.waffleColor);									// Draw the central color
 		drawable.fillRect(p0.x, p0.y, p1.x, p1.y);
 	}
+	/**======================================================================================
+	 * Draws stripes on a waffle cell described by the leftmost and highest pixel (xp, yp)
+	 ========================================================================================*/
+	private void stripeWaffle(int xp, int yp, Graphics2D drawable)
+	{
+		Point p10, p11, p20, p21, p30, p31;
+		p10 = new Point(xp,yp+cellHeight/2);
+		p11 = new Point(xp+cellWidth/2,yp);
+		p20 = new Point(xp,yp+cellHeight);
+		p21 = new Point(xp+cellWidth,yp);
+		p30 = new Point(xp+cellWidth/2,yp+cellHeight);
+		p31 = new Point(xp+cellWidth,yp+cellHeight/2);
+
+		drawable.drawLine(p10.x, p10.y, p11.x, p11.y);
+		drawable.drawLine(p20.x, p20.y, p21.x, p21.y);
+		drawable.drawLine(p30.x, p30.y, p31.x, p31.y);
+	}
 	/**================================================================================
-	 * Draww an empty waffle cell described by the most left and high pixel (xp, yp)
+	 * Draws an empty waffle cell described by the leftmost and highest pixel (xp, yp)
 	 ==================================================================================*/
 	private void drawEatenWaffle(int xp, int yp, Graphics2D drawable)
 	{
@@ -137,7 +202,7 @@ public class WaffleView extends JPanel implements MouseListener
 		drawable.fillRect(xp, yp, cellWidth, cellHeight);
 	}
 	/**================================================================================
-	 * Draws a poisoned waffle cell described by the most left and high pixel (xp, yp)
+	 * Draws a poisoned waffle cell described by the leftmost and highest pixel (xp, yp)
 	 ==================================================================================*/
 	private void drawPoison(int xp, int yp, Graphics2D drawable)
 	{
@@ -151,8 +216,8 @@ public class WaffleView extends JPanel implements MouseListener
 	}
 	/**=======================================================================
 	 * Draws the waffle shades in the cell described by
-	 *  the most left and high pixel (xp, yp)
-	 *  The most left and high point of the inside square is returned in p0
+	 *  the leftmost and highest pixel (xp, yp)
+	 *  The leftmost and highest point of the inside square is returned in p0
 	 *  The width and height of the inside square is returned in p1
 	 ==========================================================================*/
 	private void drawShades(int xp, int yp, Graphics2D drawable, Point p0, Point p1)
@@ -182,4 +247,5 @@ public class WaffleView extends JPanel implements MouseListener
 		p1.x = (int)w;
 		p1.y = (int)h;
 	}
+
 }
