@@ -43,16 +43,16 @@ public class GuiController implements ComponentListener
 	private JSplitPane 						frameOrganizer1;
 	private JSplitPane 						frameOrganizer2;
 	private JSplitPane 						frameOrganizer3;
+	private String[]						playersName = {"1", "2"};
 
 	private Engine							engine;
+	public boolean							isEnd;
 
 // --------------------------------------------
 // Constructeur:
 // --------------------------------------------
 	public GuiController(Engine engine) throws IOException
 	{
-System.out.println(engine.isRedoable());
-System.out.println(engine.isUndoable());
 		this.engine = engine;
 		int w	= (int)(partitionW	* defaultFrameWidth);								// Largeur du panneau principal
 		int h	= defaultFrameHeight - secureH;											// Hauteur du panneau principale
@@ -62,18 +62,18 @@ System.out.println(engine.isUndoable());
 		this.waffleView		= new WaffleView(w, h, engine);								// Initialisation du panneaux principal
 		this.nameView		= new JTextPane();						 	  				// Initialisation du panneaux lateral haut
 		this.infoView		= new JTextPane();											// Initialisation du panneaux lateral centrale
-		this.controlWindow	= new ControlWindow(defaultFrameWidth-w, h-(h1+h2), engine);// Initialisation du panneaux lateral bas
+		this.controlWindow	= new ControlWindow(defaultFrameWidth-w, h-(h1+h2), engine, this);// Initialisation du panneaux lateral bas
 		this.setupMenuBar(); 						          							// Initialisation du menuBar
 
 		this.resize(defaultFrameWidth, defaultFrameHeight);
 
 		this.frame = new JFrame(frameName);
 		this.frame.setSize(defaultFrameWidth, defaultFrameHeight);
-		this.frame.setJMenuBar(menuBar); // Placer l'ensemble des pan dans la
-											// fenetre
+		this.frame.setJMenuBar(menuBar);												// Placer l'ensemble des pan dans la fenetre
 		this.frame.add(frameOrganizer3);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.setVisible(true);
+		this.update();
 	}
 
 	public void update()
@@ -81,7 +81,7 @@ System.out.println(engine.isUndoable());
 		GameState gs = engine.getCurrentGameState();
 		this.waffleView		.update();
 		this.controlWindow	.update();
-		this.nameView		.setText(playerText+ engine.getCurrentPlayer());
+		this.nameView		.setText(playerText+ playersName[engine.getCurrentPlayer()-1]);
 		this.updateMenuBar();
 /*		switch(engine.getNbHumanPlayers())
 		{
@@ -102,6 +102,12 @@ System.out.println(engine.isUndoable());
 			infoView.setText(endInfoText);
 		}
 	}
+	public void setPlayersName(String name1, String name2)
+	{
+		this.playersName[0] = name1;
+		this.playersName[1] = name2;
+		this.nameView.setText(playerText+ playersName[engine.getCurrentPlayer()-1]);
+	}
 
 // --------------------------------------------
 // Resizer:
@@ -113,25 +119,20 @@ System.out.println(engine.isUndoable());
 		this.resize(width, height);
 	}
 
-	private void resize(int width, int height) {
-		int w = (int) (partitionW * width); // Largeur du panneau principal
-		int h = height - secureH; // Hauteur du panneau principale
-		int h1 = (int) (partitionH1 * h); // Hauteur du panneau lateral haut
-		int h2 = (int) (partitionH2 * h); // Hauteur du panneau lateral centrale
+	private void resize(int width, int height)
+	{
+		int w = (int) (partitionW * width); 					// Largeur du panneau principal
+		int h = height - secureH;								// Hauteur du panneau principale
+		int h1 = (int) (partitionH1 * h);						// Hauteur du panneau lateral haut
+		int h2 = (int) (partitionH2 * h);						// Hauteur du panneau lateral centrale
 
 		this.waffleView.resize(w, h);
-		this.frameOrganizer1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
-				infoView, controlWindow);
-		this.frameOrganizer2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true,
-				nameView, frameOrganizer1);
-		this.frameOrganizer3 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				true, waffleView, frameOrganizer2);
-		this.frameOrganizer1.setDividerLocation(h2); // Placer le separateur de
-														// fenetres vertical
-		this.frameOrganizer2.setDividerLocation(h1); // Placer le separateur de
-														// fenetres vertical
-		this.frameOrganizer3.setDividerLocation(w); // Placer le separateur de
-													// fenetres horizontal
+		this.frameOrganizer1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, infoView, controlWindow);
+		this.frameOrganizer2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true, nameView, frameOrganizer1);
+		this.frameOrganizer3 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, waffleView, frameOrganizer2);
+		this.frameOrganizer1.setDividerLocation(h2);			// Placer le separateur de fenetres vertical
+		this.frameOrganizer2.setDividerLocation(h1);			// Placer le separateur de fenetres vertical
+		this.frameOrganizer3.setDividerLocation(w);				// Placer le separateur de fenetres horizontal
 		this.frameOrganizer1.setDividerSize(12);
 		this.frameOrganizer2.setDividerSize(12);
 		this.frameOrganizer3.setDividerSize(12);
@@ -146,12 +147,12 @@ System.out.println(engine.isUndoable());
 // ---------------------------------------------
 // Menu Bar
 // ---------------------------------------------
-    private JMenuItem createMenuItem(String title, String action)
-    {
-        JMenuItem menuItem = new JMenuItem(title);
-        menuItem.addActionListener(new ActionPerformer(this.engine, action));
-        return menuItem;
-    }
+	private JMenuItem createMenuItem(String title, String action)
+	{
+		JMenuItem menuItem = new JMenuItem(title);
+		menuItem.addActionListener(new ActionPerformer(this.engine, action));
+		return menuItem;
+	}
 
     private void setupMenuBar()
     {
@@ -171,6 +172,7 @@ System.out.println(engine.isUndoable());
         this.redoMenuItem = this.createMenuItem("Redo", "redo");
         editMenu.add(this.redoMenuItem);
         this.menuBar.add(editMenu);
+        updateMenuBar();
     }
     private void updateMenuBar()
     {

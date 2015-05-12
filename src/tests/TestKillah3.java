@@ -14,21 +14,22 @@ public class TestKillah3 {
 		Player P0, P1;
 		Point p;
 		int  k;
-		String dumb, medium, killah, winner, name0, name1;
-		dumb = "Dumb";
+		String medium, killah, winner, name0, name1;
 		medium = "Medium";
 		killah = "Killah";
 
 
-
+		
 		name0 = medium;
 		name1 = killah;
 		P0 = new Medium();
 		P1 = new Killah();
 
+		System.out.println("|| "+name0 + " VS " + name1+" ||");
 
 		B = new GameState(3,3);
 		k=0;
+
 		while (! B.mustLose()) {
 			k++;
 			if(k%2 == 0){
@@ -44,7 +45,7 @@ public class TestKillah3 {
 		}
 		
 		// Who wins ?
-		if(k%2 == 0) {
+		if(k%2 == 1) {
 			winner = name1;
 		} 
 		else { 

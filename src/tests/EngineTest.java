@@ -13,7 +13,7 @@ public class EngineTest {
         Logger.enableEngineLog = true;
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("number of human players : ");
+        System.out.print("Number of human players ? ");
         int nbOfPlayers = Integer.valueOf(br.readLine());
 
         Engine engine;
@@ -34,5 +34,8 @@ public class EngineTest {
                 engine.play(x, y);
             }
         }
+        
+        System.out.println("THE FULL GAME !!!");
+        engine.printPast();
     }
 }

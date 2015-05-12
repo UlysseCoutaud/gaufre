@@ -2,9 +2,12 @@
 package engine;
 
 import gui.GuiController;
+
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Stack;
+
 import player.Medium;
 import player.Player;
 import util.Logger;
@@ -18,13 +21,11 @@ public class Engine {
     private int nbOfHumanPlayers;
     private GuiController gui = null;
 
-    int currentPlayer = 1;
-
     public Engine(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
-    	restart(boardWidth, boardHeight, nbOfHumanPlayers);
+    	startNewGame(boardWidth, boardHeight, nbOfHumanPlayers);
     }
-    
-    public void restart(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
+
+    public void startNewGame(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
         pastStates = new Stack<GameState>();
         futureStates = new Stack<GameState>();
         currentState = new GameState(boardWidth, boardHeight);
@@ -45,7 +46,6 @@ public class Engine {
         while (!currentState.mustLose()) {
             updateGuiIfAny();
             playCPU();
-            passToNextPlayer();
         }
         currentPlayerDefeated();
     }
@@ -56,22 +56,15 @@ public class Engine {
             return;
         }
 
-        chooseCell(new Point(x, y));
-        passToNextPlayer();
-        updateGuiIfAny();
         checkForDefeat();
+        chooseCell(new Point(x, y));
+        updateGuiIfAny();
 
-        if (isComputerPlayer(currentPlayer) && !currentState.mustLose()) {
-            playCPU();
-            passToNextPlayer();
-            updateGuiIfAny();
+        if (isComputerPlayer(getCurrentPlayer()) && !currentState.mustLose()) {
             checkForDefeat();
+            playCPU();
+            updateGuiIfAny();
         }
-    }
-
-    private void passToNextPlayer() {
-        currentPlayer %= 2;
-        currentPlayer++;
     }
 
     private void updateGuiIfAny() {
@@ -87,11 +80,11 @@ public class Engine {
     }
 
     private void currentPlayerDefeated() {
-        Logger.logEngine("PLAYER " + currentPlayer + " DEFEATED");
+        Logger.logEngine("PLAYER " + getCurrentPlayer() + " DEFEATED");
     }
 
     private void playCPU() {
-        Player cpu = solveurList.get(currentPlayer - nbOfHumanPlayers - 1);
+        Player cpu = solveurList.get(getCurrentPlayer() - nbOfHumanPlayers - 1);
         Point p;
         do {
             p = cpu.makeChoice(currentState);
@@ -104,7 +97,8 @@ public class Engine {
         futureStates.clear();
         pastStates.push(currentState.cloneGameState());
         currentState = currentState.cloneGameState();
-        currentState.currentPlayer = currentPlayer;
+        currentState.currentPlayer %= 2;
+        currentState.currentPlayer++;
         currentState.eat(p);
         Logger.logEngine(currentState.toString());
     }
@@ -122,7 +116,7 @@ public class Engine {
     }
 
     public int getCurrentPlayer() {
-        return currentPlayer;
+        return currentState.currentPlayer;
     }
 
     // Undo / redo
@@ -134,7 +128,6 @@ public class Engine {
         }
         futureStates.push(currentState.cloneGameState());
         currentState = pastStates.pop();
-        currentPlayer = currentState.currentPlayer;
         gui.update();
         Logger.logEngine("ACTION UNDONE \n " + currentState.toString());
     }
@@ -146,7 +139,6 @@ public class Engine {
         }
         pastStates.push(currentState.cloneGameState());
         currentState = futureStates.pop();
-        currentPlayer = currentState.currentPlayer;
         gui.update();
         Logger.logEngine("ACTION REDONE \n " + currentState.toString());
     }
@@ -162,4 +154,11 @@ public class Engine {
     public int getNbHumanPlayers() {
         return nbOfHumanPlayers;
     }
+
+	public void printPast() {
+		Iterator<GameState> it = pastStates.iterator();
+		while(it.hasNext()) {
+			System.out.println(it.next().toString() + "\n\n");
+		}
+	}
 }
