@@ -7,7 +7,7 @@ public class Logger {
 	public static boolean enableAppLog = true;
 	public static boolean enableEngineLog = true;
 	public static boolean enableGuiLog = true;
-	public static boolean enableIaLog = true;
+	public static boolean enableIaLog = false;
 
 	// Logs
 

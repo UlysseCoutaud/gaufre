@@ -81,7 +81,6 @@ public class Engine {
 
 	private void currentPlayerDefeated() {
 		// TODO current player defaite
-		// Affichage console vite fait -- Julie
 		Logger.logEngine("PLAYER " + currentPlayer + " DEFEATED");
 	}
 

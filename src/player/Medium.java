@@ -22,11 +22,18 @@ public class Medium implements Player {
 		// Avoiding losing choices
 		GameState availableChoices = currentConfig.cloneGameState();
 		do {
-			// No choice left
-			if (currentConfig.mustLose() || availableChoices.boardIsEmpty()) {
+			// Only poison
+			if (currentConfig.mustLose()) {
 				p = new Point(0, 0);
 				break;
 			}
+			// Several cells but all are losing choices
+			if(availableChoices.boardIsEmpty()) {
+				do {
+					p = randomPoint(currentConfig);
+				} while(p.equals(new Point(0,0)));
+				break;
+			}				
 			p = randomPoint(availableChoices);
 			availableChoices.remove(p);
 		} while (willLoseNextTurn(currentConfig, p));

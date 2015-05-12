@@ -138,7 +138,7 @@ public class GameState {
 
 	private String boardToString(Cell[][] board) {
 		String string = new String();
-		for (int i = 0; i < board.length; i++) {
+		for (int i = 0; i < board[0].length; i++) {
 			string += "+---";
 		}
 		string += "+\n";
@@ -146,7 +146,7 @@ public class GameState {
 		for (int j = 0; j < board.length; j++) {
 			string += "| ";
 			for (int i = 0; i < board[0].length; i++) {
-				Cell cell = board[i][j];
+				Cell cell = board[j][i];
 				switch (cell) {
 				case POISON:
 					string += "P ";
@@ -161,7 +161,7 @@ public class GameState {
 				string += "| ";
 			}
 			string += "\n";
-			for (int k = 0; k < board.length; k++) {
+			for (int k = 0; k < board[0].length; k++) {
 				string += "+---";
 			}
 			string += "+\n";

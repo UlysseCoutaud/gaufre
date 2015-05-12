@@ -2,9 +2,7 @@ package tests;
 
 import java.awt.Point;
 
-import player.Dumb;
-import player.Medium;
-import player.Player;
+import player.*;
 import engine.GameState;
 
 public class TestAIDuels {
@@ -15,9 +13,9 @@ public class TestAIDuels {
 		Point p;
 		int win0, win1;
 		String dumb, medium, killah, winner, name0, name1;
-		dumb = "Dumb";
+		dumb = "Easy";
 		medium = "Medium";
-		killah = "Killah";
+		killah = "Difficult";
 
 		/* We do 6 duels in total :
 		 * Each of the 3 players fights against the 2 others
@@ -41,38 +39,34 @@ public class TestAIDuels {
 				name0 = dumb;
 				name1 = killah;
 				P0 = new Dumb();
-				P1 = new Dumb();
-				// P1 = new Killah();
+				P1 = new Killah();
 				break;
 			case 3:
 				name0 = killah;
 				name1 = dumb;
-				P0 = new Dumb();
-				// P0 = new Killah();
+				P0 = new Killah();
 				P1 = new Dumb();
 				break;
 			case 4:
 				name0 = medium;
 				name1 = killah;
 				P0 = new Medium();
-				P1 = new Dumb();
-				// P1 = new Killah();
+				P1 = new Killah();
 				break;
 			default:
 				name0 = killah;
 				name1 = medium;
-				P0 = new Dumb();
-				// P0 = new Killah();
+				P0 = new Killah();
 				P1 = new Medium();
 				break;
 			}
 			win0 = win1 = 0;
 			System.out.println("|| "+name0 + " VS " + name1+" ||");
-			// Each duel consists of 100 games
-			for (int j = 0; j < 100; j++) {
+			// Each duel consists of 50 games
+			for (int j = 0; j < 50; j++) {
 				int k;
 				// New game (we go up to 1000 moves)
-				B = new GameState(5, 5);
+				B = new GameState(3, 5);
 				for (k = 1; k <= 1000; k++) {
 					if (B.mustLose())
 						break;
