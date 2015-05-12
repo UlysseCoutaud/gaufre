@@ -51,6 +51,6 @@ public class ControlWindow extends JPanel
 	{
 		this.undo.setEnabled(engine.isUndoable());
 		this.redo.setEnabled(engine.isRedoable());
-		this.undo.setEnabled(engine.isUndoable() || engine.isRedoable());
+		this.restart.setEnabled(engine.isUndoable() || engine.isRedoable());
 	}
 }
