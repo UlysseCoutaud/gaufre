@@ -140,7 +140,7 @@ public class RestartInterface
 			else if	(IAPlayer2.isSelected())	players = 1;
 			else								players = 2;
 
-			engine.startNewGame(w, h, players);
+			engine.newGame(w, h, players);
 			gui.setPlayersName(p1Name, p2Name);
 			gui.setGroundDim(w, h);
 			

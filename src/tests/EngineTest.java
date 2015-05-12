@@ -21,10 +21,13 @@ public class EngineTest {
         int width = 16, height = 9;
 
         engine = new Engine(width, height, nbOfPlayers);
+    	engine.addMediumAI();
+    	engine.addMediumAI();
 
         if (nbOfPlayers == 0) {
             engine.startAIMatch();
         } else {
+        	
             while (!engine.getCurrentGameState().mustLose()) {
                 System.out.println("\n # Player " + engine.getCurrentPlayer() + " :");
                 System.out.print("  -  choose x : ");

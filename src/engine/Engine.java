@@ -24,10 +24,10 @@ public class Engine {
     private GuiController gui = null;
 
     public Engine(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
-    	startNewGame(boardWidth, boardHeight, nbOfHumanPlayers);
+    	newGame(boardWidth, boardHeight, nbOfHumanPlayers);
     }
 
-    public void startNewGame(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
+    public void newGame(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
         pastStates = new Stack<GameState>();
         futureStates = new Stack<GameState>();
         currentState = new GameState(boardWidth, boardHeight);
@@ -141,6 +141,9 @@ public class Engine {
         currentState = pastStates.pop();
         gui.update();
         Logger.logEngine("ACTION UNDONE \n " + currentState.toString());
+        if(nbOfHumanPlayers == 1) {
+        	if(currentState.currentPlayer == 2) undo();
+        }
     }
 
     public void redo() {
@@ -152,6 +155,9 @@ public class Engine {
         currentState = futureStates.pop();
         gui.update();
         Logger.logEngine("ACTION REDONE \n " + currentState.toString());
+        if(nbOfHumanPlayers == 1) {
+        	if(currentState.currentPlayer == 2) redo();
+        }
     }
     public boolean isUndoable() {
         return !pastStates.isEmpty();
