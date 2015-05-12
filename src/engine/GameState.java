@@ -84,6 +84,8 @@ public class GameState {
 	public void eat(int x, int y) {
 		for (int i = x; i < width; i++) {
 			for (int j = y; j < height; j++) {
+				if (isEaten(i, j))
+					break;
 				remove(i, j);
 			}
 		}
