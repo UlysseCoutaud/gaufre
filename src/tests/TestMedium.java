@@ -15,6 +15,7 @@ public class TestMedium {
 
 		System.out.println(B);
 		System.out.println("=====================");
+		System.out.println("=====================");
 		for (int i = 1; i <= 100; i++) {
 			if (B.mustLose())
 				break;
@@ -22,6 +23,7 @@ public class TestMedium {
 			B.eat(p);
 			System.out.println(i + ": (" + p.y + "," + p.x + ")");
 			System.out.println(B);
+			System.out.println("=====================");
 			System.out.println("=====================");
 		}
 

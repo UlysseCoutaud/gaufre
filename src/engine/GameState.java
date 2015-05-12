@@ -237,8 +237,10 @@ public class GameState {
 	public boolean boardIsEmpty() {
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				if (!isEaten(i, i))
+				if (!isEaten(i, j)) {
 					return false;
+				}
+
 			}
 		}
 		return true;
