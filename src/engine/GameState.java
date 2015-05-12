@@ -181,7 +181,7 @@ public class GameState {
 			y = 0;
 		}
 
-		boolean hasNext() {
+		public boolean hasNext() {
 			for (int i = x; i < width; i++) {
 				for (int j = y; j < height; j++) {
 					if (isWaffle(i, j)) {
@@ -194,21 +194,21 @@ public class GameState {
 			return false;
 		}
 
-		Cell next() {
+		public Cell next() {
 			x = nextX;
 			y = nextY;
 			return board[x][y];
 		}
 
-		int getX() {
+		public int getX() {
 			return x;
 		}
 
-		int getY() {
+		public int getY() {
 			return y;
 		}
 
-		Point getPoint() {
+		public Point getPoint() {
 			return new Point(x, y);
 		}
 	}
