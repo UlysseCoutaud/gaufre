@@ -1,10 +1,11 @@
 
-package waffle.application;
+package application;
 
 import javax.swing.SwingUtilities;
-import waffle.engine.Engine;
-import waffle.gui.GuiController;
-import waffle.util.Logger;
+
+import engine.Engine;
+import gui.GuiController;
+import util.Logger;
 
 public class Main implements Runnable {
 

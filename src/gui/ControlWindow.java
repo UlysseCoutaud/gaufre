@@ -1,10 +1,12 @@
 
-package waffle.gui;
+package gui;
 
 import java.awt.GridLayout;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import waffle.engine.Engine;
+
+import engine.Engine;
 
 public class ControlWindow extends JPanel {
 

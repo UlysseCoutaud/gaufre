@@ -1,8 +1,9 @@
 
-package waffle.player;
+package player;
 
 import java.awt.Point;
-import waffle.engine.GameState;
+
+import engine.GameState;
 
 /*
  * Interface player

@@ -1,5 +1,5 @@
 
-package waffle.player;
+package player;
 
 import java.awt.Point;
 

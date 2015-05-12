@@ -1,5 +1,5 @@
 
-package waffle.util;
+package util;
 
 public class Logger {
 

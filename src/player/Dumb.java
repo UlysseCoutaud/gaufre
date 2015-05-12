@@ -1,9 +1,10 @@
 
-package waffle.player;
+package player;
 
 import java.awt.Point;
 import java.util.Random;
-import waffle.engine.GameState;
+
+import engine.GameState;
 
 public class Dumb implements Player {
 

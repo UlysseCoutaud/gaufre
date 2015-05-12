@@ -1,5 +1,5 @@
 
-package waffle.gui;
+package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -9,10 +9,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import waffle.engine.Engine;
-import waffle.util.Logger;
+
+import engine.Engine;
+import util.Logger;
 
 public class WaffleView extends JPanel implements MouseListener {
 

@@ -1,7 +1,9 @@
 
-package waffle.player;
+package tests;
 
-import waffle.engine.GameState;
+import player.Dumb;
+import player.Player;
+import engine.GameState;
 
 public class TestDumb {
 
