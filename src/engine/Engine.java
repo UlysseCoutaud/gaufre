@@ -87,14 +87,8 @@ public class Engine {
 	}
 
 	private void playCPU() {
-		Player cpu = solveurList.get(currentPlayer - nbOfHumanPlayers - 1); // should
-																			// always
-																			// be
-																			// 1
-																			// but
-																			// generic
-																			// this
-																			// way
+		// should always be 1 but generic this way
+		Player cpu = solveurList.get(currentPlayer - nbOfHumanPlayers - 1);
 		Point p = cpu.makeChoice(currentState);
 		chooseCell(p);
 	}

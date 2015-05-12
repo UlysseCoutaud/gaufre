@@ -64,8 +64,8 @@ public class GameState {
 	/**
 	 * Returns true if we can eat this square without being poisoned
 	 */
-	public boolean isSafe(int i, int j) {
-		return i != 0 || j != 0;
+	public boolean isSafeToEat(int i, int j) {
+		return isWaffle(i, j);
 	}
 
 	public Cell getCell(int i, int j) {
