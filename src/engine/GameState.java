@@ -34,7 +34,7 @@ public class GameState {
 	 * Returns true if the only square left is poisoned
 	 */
 	public boolean mustLose() {
-		return height > 1 && isEaten(0, 1) && width > 1 && isEaten(0, 1);
+		return height > 1 && isEaten(0, 1) && width > 1 && isEaten(1, 0);
 	}
 
 	public boolean isWaffle(int i, int j) {

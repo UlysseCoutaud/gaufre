@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 
@@ -24,6 +25,7 @@ public class GuiController implements ComponentListener
 // --------------------------------------------
 	private final static String				frameName			= "Waffle Game";
 	private final static String				playerText			= "Player: ";
+	private final static String				looseText			= "The looser is: ";
 	private final static int				defaultFrameWidth	= 800;
 	private final static int				defaultFrameHeight	= 800;
 	private final static int				secureH				= 65;
@@ -91,6 +93,7 @@ public class GuiController implements ComponentListener
 			default: throw new RuntimeException("Undefined nbrPlayer value: " + gs.getNbPlayer());
 		}
 */
+		if (gs.mustLose()) JOptionPane.showMessageDialog(null, looseText + engine.getCurrentPlayer());
 ////		afficher une victoire
 	}
 
