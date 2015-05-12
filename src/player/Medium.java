@@ -14,18 +14,24 @@ public class Medium implements Player {
 		Point p;
 
 		p = searchVictoryNextTurn(currentConfig);
+		// Easy win
 		if (p != null) {
-			return p; // Easy win
+			return p;
 		}
 
-		GameState nextConfig = currentConfig.cloneGameState();
-		do { // Avoiding stupid choices
-			if (currentConfig.mustLose()) { // No choice remaining
+		// Avoiding losing choices
+		GameState availableChoices = currentConfig.cloneGameState();
+		do {
+			System.out.print("Choices :\n" + availableChoices);
+			if (currentConfig.mustLose() || availableChoices.boardIsEmpty()) {
+				// No choice left
+				System.out.println("Lose");
 				p = new Point(0, 0);
 				break;
 			}
-			p = randomPoint(nextConfig);
-			nextConfig.remove(p); // We don't want to repeat the same choices
+			p = randomPoint(availableChoices);
+			availableChoices.remove(p);
+			System.out.println("-(" + p.y + "," + p.x + ")");
 		} while (willLoseNextTurn(currentConfig, p));
 		return p;
 	}
