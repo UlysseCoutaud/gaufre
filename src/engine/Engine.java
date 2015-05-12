@@ -55,7 +55,7 @@ public class Engine {
 		updateGuiIfAny();
 		checkForDefeat();
 
-		if (isComputerPlayer(currentPlayer)) {
+		if (isComputerPlayer(currentPlayer) && !currentState.mustLose()) {
 			playCPU();
 			passToNextPlayer();
 			updateGuiIfAny();
