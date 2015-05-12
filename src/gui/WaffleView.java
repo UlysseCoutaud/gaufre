@@ -1,4 +1,4 @@
-package ihm;
+package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import waffle.engine.Engine;
+import engine.Engine;
 
 
 
@@ -91,9 +91,9 @@ throw new RuntimeException("A faireeeeeeeeeeeee########################");
 	{
 //		CurrentState cs		= engine.getCurrentState();
 class CurrentState {
-public boolean isWaffel(int x, int y) {return (x != 2 && y != 3);}
+public boolean isWaffel(int x, int y) {return true;}//return (x != 2 && y != 3);}
 public boolean isEaten(int x, int y) {return false;}
-public boolean isPoison(int x, int y) {return (x == 2 && y == 3);}
+public boolean isPoison(int x, int y) {return false;}//return (x == 2 && y == 3);}
 }
 CurrentState cs = new CurrentState();
 this.cellWidth	= (getWidth() - 2*xMin) / 5;		// Waffle cell size
