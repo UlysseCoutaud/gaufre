@@ -121,6 +121,7 @@ public class Engine {
 
 	public void undo() {
 		if (!isUndoable()) {
+
 			Logger.logEngine("No Actions left to undo.");
 			return;
 		}

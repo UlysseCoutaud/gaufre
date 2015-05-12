@@ -28,10 +28,10 @@ public class ControlWindow extends JPanel
 	{
 		super();
 		super.setSize(width, height);
-		this.engine = engine;
-		this.undo = new JButton(undoText);
-		this.redo = new JButton(redoText);
-		this.restart = new JButton(restartText);
+		this.engine	= engine;
+		this.undo	= new JButton(undoText);
+		this.redo	= new JButton(redoText);
+		this.restart= new JButton(restartText);
 
 		this.setLayout(new GridLayout(3, 1));
 
@@ -39,9 +39,9 @@ public class ControlWindow extends JPanel
 		this.add(redo);
 		this.add(restart);
 
-		this.undo.addActionListener(new ActionPerformer(engine, "undo"));
-		this.redo.addActionListener(new ActionPerformer(engine, "redo"));
-		this.restart.addActionListener(new ActionPerformer(engine, "restart"));
+		this.undo.addActionListener		(new ActionPerformer(engine, "undo"));
+		this.redo.addActionListener		(new ActionPerformer(engine, "redo"));
+		this.restart.addActionListener	(new ActionPerformer(new RestartInterface(), "show"));
 	}
 
 // --------------------------------------------
@@ -51,6 +51,6 @@ public class ControlWindow extends JPanel
 	{
 		this.undo.setEnabled(engine.isUndoable());
 		this.redo.setEnabled(engine.isRedoable());
-		this.undo.setEnabled(engine.isUndoable() || engine.isRedoable());
+		this.restart.setEnabled(engine.isUndoable() || engine.isRedoable());
 	}
 }
