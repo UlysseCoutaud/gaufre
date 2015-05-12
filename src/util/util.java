@@ -4,7 +4,7 @@ import engine.GameState.Cell;
 
 public class util {
 	public static void debug(String str) {
-		System.out.println(str);
+		System.out.println("DEBUG : " + str);
 	}
 
 	public static Cell[][] newBoard(int w, int h) {
@@ -14,7 +14,7 @@ public class util {
 				res[i][j] = Cell.WAFFLE;
 			}
 		}
-		res[0][0] = Cell.EATEN;
+		res[0][0] = Cell.POISON;
 		return res;
 	}
 

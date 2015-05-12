@@ -16,7 +16,7 @@ public class Engine {
 	private GameState currentState;
 	private ArrayList<Player> solveurList;
 	private int nbOfHumanPlayers;
-	private GuiController gui;
+	private GuiController gui = null;
 
 	int currentPlayer = 1;
 
@@ -24,7 +24,7 @@ public class Engine {
 
 		pastStates = new Stack<GameState>();
 		futureStates = new Stack<GameState>();
-		currentState = new GameState(boardHeight, boardWidth);
+		currentState = new GameState(boardWidth, boardHeight);
 		this.nbOfHumanPlayers = nbOfHumanPlayers;
 
 		solveurList = new ArrayList<Player>();
@@ -32,6 +32,7 @@ public class Engine {
 			solveurList.add(new Medium()); // TODO faire en sorte qu'on puisse
 											// choisir
 		}
+		util.debug(currentState.toString());
 	}
 
 	public void setIHM(GuiController ihm) {
@@ -58,26 +59,36 @@ public class Engine {
 
 	public void startAIMatch() {
 		while (!currentState.mustLose()) {
-			gui.updateYourself();
+			updateGuiIfAny();
 			playCPU();
-			currentPlayer++;
+			passToNextPlayer();
 		}
 		currentPlayerDefeated();
+	}
+
+	private void updateGuiIfAny() {
+		if (gui != null)
+			gui.updateYourself();
 	}
 
 	// TODO
 	public void play(int x, int y) {
 		chooseCell(new Point(x, y));
-		currentPlayer++;
-		gui.updateYourself();
+		passToNextPlayer();
+		updateGuiIfAny();
 		checkForDefeat();
 
 		if (isComputerPlayer(currentPlayer)) {
 			playCPU();
-			currentPlayer++;
-			gui.updateYourself();
+			passToNextPlayer();
+			updateGuiIfAny();
 			checkForDefeat();
 		}
+	}
+
+	private void passToNextPlayer() {
+		currentPlayer %= 2;
+		currentPlayer++;
 	}
 
 	private void checkForDefeat() {
@@ -88,10 +99,18 @@ public class Engine {
 
 	private void currentPlayerDefeated() {
 		// TODO current player defaite
+		util.debug("PLAYER " + currentPlayer + " DEFEATED!");
 	}
 
 	private void playCPU() {
-		Player cpu = solveurList.get(currentPlayer - nbOfHumanPlayers - 1); // should always be 1 but generic this way
+		Player cpu = solveurList.get(currentPlayer - nbOfHumanPlayers - 1); // should
+																			// always
+																			// be
+																			// 1
+																			// but
+																			// generic
+																			// this
+																			// way
 		Point p = cpu.makeChoice(currentState);
 		chooseCell(p);
 	}
@@ -100,6 +119,7 @@ public class Engine {
 		pastStates.push(currentState);
 		currentState = currentState.cloneState();
 		currentState.eat(p);
+		util.debug(currentState.toString());
 	}
 
 	private boolean isComputerPlayer(int player) {

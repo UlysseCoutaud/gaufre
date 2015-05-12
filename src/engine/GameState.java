@@ -25,10 +25,10 @@ public class GameState {
 	}
 
 	public GameState(Cell[][] board, int currentPlayer) {
-		this.board = copyOf(board);
-		this.currentPlayer = currentPlayer;
 		this.width = board.length;
 		this.height = board[0].length;
+		this.board = copyOf(board);
+		this.currentPlayer = currentPlayer;
 	}
 
 	public GameState(int width, int height) {
