@@ -21,11 +21,11 @@ public class GuiController implements ComponentListener
 // Attributs:
 // --------------------------------------------
 	private final static String				frameName			= "Waffle Game";
-	private final static String				playerText			= "Player: ";
+	private final static String				playerText			= "Player ";
 	private final static String				looseText			= "The looser is: " + playerText;
 	private final static String				IAPlayerText		= "  (CPU).";
 	private final static String				humanPlayerText		= "  (Human).";
-	private final static String				instructionText		= "At every turn, each player must eat a lowermost right end of the waffle.\nThe player who eats the poison celle looses the game";
+	private final static String				instructionText		= "At every turn, each player must eat a bite of the waffle.\nThe player who eats the poison looses the game";
 	private final static String				endInfoText			= "End of game!";
 	private final static int				defaultFrameWidth	= 800;
 	private final static int				defaultFrameHeight	= 800;
@@ -46,7 +46,7 @@ public class GuiController implements ComponentListener
 	private JSplitPane 						frameOrganizer1;
 	private JSplitPane 						frameOrganizer2;
 	private JSplitPane 						frameOrganizer3;
-	private String[]						playersName = {"1", "2"};
+	private String[]						playersName;
 
 	private Engine							engine;
 	public boolean							isEnd;
@@ -56,6 +56,9 @@ public class GuiController implements ComponentListener
 // --------------------------------------------
 	public GuiController(Engine engine) throws IOException
 	{
+		this.playersName = new String[2];
+		this.playersName[0] = "1";
+		this.playersName[1] = "2";
 		this.engine = engine;
 		int w	= (int)(partitionW	* defaultFrameWidth);								// Largeur du panneau principal
 		int h	= defaultFrameHeight - secureH;											// Hauteur du panneau principale
@@ -105,7 +108,7 @@ public class GuiController implements ComponentListener
 		}
 		if (gs.boardIsEmpty())
 		{
-			JOptionPane.showMessageDialog(null, looseText + playersName[(engine.getCurrentPlayer()+1)%2-1]);
+			JOptionPane.showMessageDialog(null, looseText + playersName[(engine.getCurrentPlayer()-1)%2]);
 			infoView.setText(endInfoText);
 		}
 	}
