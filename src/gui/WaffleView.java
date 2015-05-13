@@ -151,7 +151,6 @@ public class WaffleView extends JPanel implements MouseListener, MouseMotionList
 	public void resize(int width, int height)
 	{
 		GameState gs = this.engine.getCurrentGameState();
-
 		this.image	= new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		this.xMin	= (int) (getWidth()*paddingWidth);			// Position of the leftmost waffle point
 		this.yMin	= (int) (getHeight()*paddingHeight);

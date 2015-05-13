@@ -73,6 +73,7 @@ public class GuiController implements ComponentListener
 		this.frame = new JFrame(frameName);
 		this.frame.setSize(defaultFrameWidth, defaultFrameHeight);
 		this.frame.setJMenuBar(menuBar);												// Placer l'ensemble des pan dans la fenetre
+//		this.frame.addComponentListener(this);
 		this.frame.add(frameOrganizer3);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.setVisible(true);
@@ -103,9 +104,9 @@ public class GuiController implements ComponentListener
 			JOptionPane.showMessageDialog(null, looseText + playersName[engine.getCurrentPlayer()-1]);
 			infoView.setText(endInfoText);
 		}
-		if (gs.boardIsEmpty())
+		else if (gs.boardIsEmpty())
 		{
-			JOptionPane.showMessageDialog(null, looseText + playersName[(engine.getCurrentPlayer()+1)%2-1]);
+			JOptionPane.showMessageDialog(null, looseText + playersName[(engine.getCurrentPlayer()-1)%2]);
 			infoView.setText(endInfoText);
 		}
 	}

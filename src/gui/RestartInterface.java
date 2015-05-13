@@ -10,6 +10,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 
 import engine.Engine;
@@ -19,33 +20,40 @@ public class RestartInterface
 // ---------------------------------
 // Attributs
 // ---------------------------------
-	private static final String		frameName		= "Game parameters";
-	private static final String		twoIAText		= "Two CPU players";
-	private static final String		IAPlayer2Text	= "CPU: player 2";
-	private static final String		twoPlayersText	= "Two players";
-	private static final String		player1Text		= "Player1";
-	private static final String		player2Text		= "Player2";
-	private static final String		dimXText		= "Board width";
-	private static final String		dimYText		= "Board height";
-	private static final String		IALevelText		= "CPU Level";
-	private static final String		playersTypeText	= "Players type";
-	private static final String[]	IALevelName		= {"Dumb", "Medium", "Killah"};
-	private static final int		frameWidth		= 300;
-	private static final int		frameHeight		= 500;
-	private static final int		nbrElemX		= 15;
-	private static final int		nbrElemY		= 2;
-	private static final int		dimMin			= 2;
-	private static final int		dimMax			= 15;	
+	private static final String		frameName			= "Game parameters";
+	private static final String		twoIAText			= "Two CPU players";
+	private static final String		IAPlayer2Text			= "CPU: player 2";
+	private static final String		twoPlayersText		= "Two players";
+	private static final String		player1Text			= "Player1";
+	private static final String		player2Text			= "Player2";
+	private static final String		dimXText			= "Board width";
+	private static final String		dimYText			= "Board height";
+	private static final String		IA1LevelText		= "CPU 1 Level";
+	private static final String		IA2LevelText		= "CPU 2 Level";
+	private static final String		playersTypeText		= "Players type";
+	private static final String		IATimeText			= "CPU waiting delay";
+	private static final String[]	IALevelName			= {"Dumb", "Medium", "Killah"};
+	private static final int		frameWidth			= 300;
+	private static final int		frameHeight			= 500;
+	private static final int		nbrElemX			= 18;
+	private static final int		nbrElemY			= 2;
+	private static final int		dimMin				= 2;
+	private static final int		dimMax				= 15;
+	private static final int		minIADelay			= 1000;
+	private static final int		maxIADelay			= 3000;
+	private static final int		defaultIADelay		= 1500;
 
 	private JFrame					frame;
 	private JTextField				player1Name;
 	private JTextField				player2Name;
 	private JComboBox<Integer>		dimXCombo;
 	private JComboBox<Integer>		dimYCombo;
-	private JComboBox<String>		IALevelCombo;
+	private JComboBox<String>		IA1LevelCombo;
+	private JComboBox<String>		IA2LevelCombo;
 	private JRadioButton			twoIA;
 	private JRadioButton			IAPlayer2;
 	private JRadioButton			twoPlayers;
+	private JSlider					IADelay;
 	private JButton					ok;
 	private JButton					cancel;
 	private Integer[]				dimList;
@@ -95,7 +103,10 @@ public class RestartInterface
 		bg.add(twoIA); bg.add(IAPlayer2); bg.add(twoPlayers);
 		this.twoPlayers.setSelected(true);
 
-		this.IALevelCombo	= new JComboBox<String>(IALevelName);
+		this.IA1LevelCombo	= new JComboBox<String>(IALevelName);
+		this.IA2LevelCombo	= new JComboBox<String>(IALevelName);
+
+		this.IADelay		= new JSlider(JSlider.HORIZONTAL, minIADelay, maxIADelay, defaultIADelay);
 
 		this.ok				= new JButton("Ok");
 		this.cancel			= new JButton("Cancel");
@@ -109,11 +120,14 @@ public class RestartInterface
 		this.frame.add(new JLabel(dimXText));		this.frame.add(dimXCombo);
 		this.frame.add(new JLabel(dimYText));		this.frame.add(dimYCombo);
 		this.frame.add(new JLabel());				this.frame.add(new JLabel());
-		this.frame.add(new JLabel(IALevelText));	this.frame.add(IALevelCombo);
+		this.frame.add(new JLabel(IA1LevelText));	this.frame.add(IA1LevelCombo);
+		this.frame.add(new JLabel(IA2LevelText));	this.frame.add(IA2LevelCombo);
 		this.frame.add(new JLabel());				this.frame.add(new JLabel());
 		this.frame.add(new JLabel(playersTypeText));this.frame.add(twoIA);
 		this.frame.add(new JLabel());				this.frame.add(IAPlayer2);
 		this.frame.add(new JLabel());				this.frame.add(twoPlayers);
+		this.frame.add(new JLabel());				this.frame.add(new JLabel());
+		this.frame.add(new JLabel(IATimeText));		this.frame.add(IADelay);
 		this.frame.add(new JLabel());				this.frame.add(new JLabel());
 		this.frame.add(new JLabel());				this.frame.add(new JLabel());
 		this.frame.add(ok);							this.frame.add(cancel);
@@ -138,8 +152,10 @@ public class RestartInterface
 			String p2Name	= player2Name.getText();
 			int w			= dimXCombo.getSelectedIndex()+dimMin;
 			int h			= dimYCombo.getSelectedIndex()+dimMin;
-			int IA			= IALevelCombo.getSelectedIndex();
+			int IA1			= IA1LevelCombo.getSelectedIndex();
+			int IA2			= IA1LevelCombo.getSelectedIndex();
 			int players;
+			engine.setWaitingDelay(IADelay.getValue());
 			if		(twoIA.isSelected())		players = 0;
 			else if	(IAPlayer2.isSelected())	players = 1;
 			else								players = 2;
@@ -148,10 +164,10 @@ public class RestartInterface
 			gui.setPlayersName(p1Name, p2Name);
 			gui.setGroundDim(w, h);
 			
-			if		(twoIA.isSelected())		{addIALevel(IA); addIALevel(IA); engine.startAIMatch();}
+			if		(twoIA.isSelected())		{addIALevel(IA1); addIALevel(IA2); engine.startAIMatch();}
 			else
 			{
-				if	(IAPlayer2.isSelected())	addIALevel(IA);
+				if	(IAPlayer2.isSelected())	addIALevel(IA1);
 				gui.update();
 			}
 		}

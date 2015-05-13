@@ -28,6 +28,7 @@ public class Engine {
     private GuiController gui = null;
     private boolean isWaitingIa = false;
     private int waitingDelay = 0;
+    private Timer timer = null;
 
     public Engine(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
     	newGame(boardWidth, boardHeight, nbOfHumanPlayers);
@@ -39,6 +40,12 @@ public class Engine {
         currentState = new GameState(boardWidth, boardHeight);
         Logger.logEngine(currentState.toString());
         this.nbOfHumanPlayers = nbOfHumanPlayers;
+        if (this.timer != null)
+        {
+        	timer.stop();
+        	timer = null;
+        	this.isWaitingIa = false;
+        }
 
         solveurList = new ArrayList<Player>();
     }
@@ -69,7 +76,7 @@ public class Engine {
 	    			startAIMatch();
 	    		}
 	    	};
-	    	Timer timer = new Timer(this.waitingDelay, taskPerformer);
+	    	this.timer = new Timer(this.waitingDelay, taskPerformer);
 	    	timer.setRepeats(false);
 	    	timer.start();
 			
@@ -104,7 +111,7 @@ public class Engine {
         			isWaitingIa = false;
         		}
         	};
-        	Timer timer = new Timer(this.waitingDelay, taskPerformer);
+        	this.timer = new Timer(this.waitingDelay, taskPerformer);
         	timer.setRepeats(false);
         	timer.start();
         }
