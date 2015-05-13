@@ -13,7 +13,7 @@ public class Dumb implements Player {
      * @see player.Player#makeChoice(GameState)
      */
     public Point makeChoice(GameState currentConfig) {
-        Random r = new Random();
+    	Random r = new Random();
         int tirage = r.nextInt(currentConfig.width * currentConfig.height) + 1;
         int i = 0, j = 0;
 

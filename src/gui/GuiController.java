@@ -100,7 +100,7 @@ public class GuiController implements ComponentListener
 			case 2: p1 += humanPlayerText;	p2 += humanPlayerText;	break;
 			default: throw new RuntimeException("Undefined nbrPlayer value: " + engine.getNbHumanPlayers());
 		}
-		infoView.setText("\n\n" + p1 + "\n" + p2 + "\n" + "\n\n\n\n" + instructionText);
+		infoView.setText("\n\n" + p1 + "\n\n" + p2 + "\n" + "\n\n\n\n" + instructionText);
 
 		if (gs.mustLose())
 		{

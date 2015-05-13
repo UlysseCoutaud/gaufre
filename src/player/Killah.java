@@ -3,8 +3,6 @@ package player;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
-
 import util.Logger;
 import engine.GameState;
 import engine.GameState.EdibleIterator;
@@ -136,7 +134,8 @@ public class Killah implements Player {
 		GameState bufferGameState;
 		boolean nextPlayer = !joueur;
 		// Cas de base
-		if (currentConfig.mustLose() && (joueur == killahPlay)) {
+		if (currentConfig.mustLose() && (joueur == killahPlay)
+		|| (currentConfig.boardIsEmpty() && (joueur == opponentPlay))) {
 			//	Logger.logIa("C");
 			currentNode = new node(nodeAND, currentConfig);
 			currentNode.tablePerdGagne.clear();
@@ -144,7 +143,8 @@ public class Killah implements Player {
 			currentNode.truthValue = false; 
 			currentNode.choiceQuality = 0.0;
 			Logger.logIa("On a la configuration"+currentConfig.toString()+"C'est a moi de jouer donc je perd");
-		} else if (currentConfig.mustLose() && (joueur == opponentPlay)) {
+		} else if ((currentConfig.mustLose() && (joueur == opponentPlay))
+				|| (currentConfig.boardIsEmpty() && (joueur == killahPlay))) {
 			currentNode = new node(nodeOR, currentConfig);
 			currentNode.tablePerdGagne.clear();
 			currentNode.tablePerdGagne.add(new donneesBranche(true, new Point(0,0), 1.0));

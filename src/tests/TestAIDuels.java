@@ -11,8 +11,8 @@ public class TestAIDuels {
 		GameState B;
 		Player P0 = null, P1 = null;
 		Point p;
-		int win0, win1;
-		String dumb, medium, killah, winner, name0 = null, name1 = null;
+		int win0, win1, winner = 0;
+		String dumb, medium, killah, winnerName, name0 = null, name1 = null;
 		dumb = "Easy";
 		medium = "Medium";
 		killah = "Difficult";
@@ -67,9 +67,15 @@ public class TestAIDuels {
 				int k;
 				// New game (we go up to 1000 moves)
 				B = new GameState(3, 5);
-				for (k = 1; k <= 1000; k++) {
-					if (B.mustLose())
+				for (k = 0; k <= 1000; k++) {
+					if (B.mustLose()) {
+						winner = (k+1)%2;
 						break;
+					}
+					if (B.boardIsEmpty()) {
+						winner = k%2;
+						break;
+					}
 					if(k%2 == 0)
 						p = P0.makeChoice(B);
 					else
@@ -77,15 +83,15 @@ public class TestAIDuels {
 					B.eat(p);
 				}
 				// Who wins ?
-				if(k%2 == 1) {
+				if(winner == 0) {
 					win0++;
-					winner = name0;
+					winnerName = name0;
 				} 
 				else { 
 					win1++;
-					winner = name1;
+					winnerName = name1;
 				}
-				//System.out.println(winner + " wins");
+				//System.out.println("\t" + winnerName + " wins");
 				
 			}
 			// Total of the 50 games = result of the duel
@@ -93,8 +99,8 @@ public class TestAIDuels {
 			if (win0 == win1)
 				System.out.println("Par");
 			else {
-				winner = win0 > win1 ? name0 : name1;
-				System.out.println("The winner is " + winner);
+				winnerName = win0 > win1 ? name0 : name1;
+				System.out.println("The winner is " + winnerName);
 			}
 
 			System.out.println("===========================");
