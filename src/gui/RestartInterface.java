@@ -153,7 +153,7 @@ public class RestartInterface
 			int w			= dimXCombo.getSelectedIndex()+dimMin;
 			int h			= dimYCombo.getSelectedIndex()+dimMin;
 			int IA1			= IA1LevelCombo.getSelectedIndex();
-			int IA2			= IA1LevelCombo.getSelectedIndex();
+			int IA2			= IA2LevelCombo.getSelectedIndex();
 			int players;
 			engine.setWaitingDelay(IADelay.getValue());
 			if		(twoIA.isSelected())		players = 0;

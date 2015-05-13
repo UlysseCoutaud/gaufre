@@ -11,7 +11,7 @@ public class TestKillah2 {
 
 	public static void main(String[] args) {
 		Logger.enableIaLog = false ;
-		GameState B = new GameState(2, 2);
+		GameState B = new GameState(6, 7);
 		Player P = new Killah();
 		Point p;
 		//System.out.println(B);

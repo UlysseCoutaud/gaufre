@@ -188,6 +188,8 @@ public class Killah implements Player {
 	}
 	
 
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -196,6 +198,7 @@ public class Killah implements Player {
 	@Override
 	public Point makeChoice(GameState currentConfig) {
 		Logger.logIa("A");
+		System.out.println("Je suis le killah je joue");
 		return gaufreMinMax(currentConfig, killahPlay).choix;
 	}
 

@@ -22,7 +22,7 @@ public class Dumb implements Player {
             if (i == 0) {
                 j = (j + 1) % currentConfig.height;
             }
-            if (currentConfig.isWaffle(i, j) || currentConfig.isPoison(i, j)) {
+            if (currentConfig.isWaffle(i, j))  {
                 tirage--;
             }
         }
