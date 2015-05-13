@@ -4,9 +4,13 @@ package engine;
 import gui.GuiController;
 
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
+
+import javax.swing.Timer;
 
 import player.Dumb;
 import player.Killah;
@@ -22,6 +26,8 @@ public class Engine {
     private ArrayList<Player> solveurList;
     private int nbOfHumanPlayers;
     private GuiController gui = null;
+    private boolean isWaitingIa = false;
+    private int waitingDelay = 0;
 
     public Engine(int boardWidth, int boardHeight, int nbOfHumanPlayers) {
     	newGame(boardWidth, boardHeight, nbOfHumanPlayers);
@@ -54,14 +60,30 @@ public class Engine {
     }
 
     public void startAIMatch() {
-        while (!currentState.mustLose()) {
-            updateGuiIfAny();
-            playCPU();
-        }
-        currentPlayerDefeated();
+    	this.isWaitingIa = true;
+    	if (!currentState.mustLose() && !currentState.boardIsEmpty()) {
+			ActionListener taskPerformer = new ActionListener() {
+	    		public void actionPerformed(ActionEvent e) {
+	    			playCPU();
+	    			updateGuiIfAny();
+	    			startAIMatch();
+	    		}
+	    	};
+	    	Timer timer = new Timer(this.waitingDelay, taskPerformer);
+	    	timer.setRepeats(false);
+	    	timer.start();
+			
+		} else {
+	    	currentPlayerDefeated();
+	       	isWaitingIa = false;
+		}
     }
 
     public void play(int x, int y) {
+    	if (this.isWaitingIa) {
+    		Logger.logEngine("We are waiting the AI");
+    		return;
+    	}
         if (!this.currentState.isWaffle(x, y) ) {
             Logger.logEngine("Cell at " + x + " " + y + " can't be eaten.");
             return;
@@ -72,9 +94,19 @@ public class Engine {
         updateGuiIfAny();
 
         if (isComputerPlayer(getCurrentPlayer()) && !currentState.mustLose()) {
-            checkForDefeat();
-            playCPU();
-            updateGuiIfAny();
+        	this.isWaitingIa = true;
+        	
+        	ActionListener taskPerformer = new ActionListener() {
+        		public void actionPerformed(ActionEvent e) {
+        			checkForDefeat();
+        			playCPU();
+        			updateGuiIfAny();
+        			isWaitingIa = false;
+        		}
+        	};
+        	Timer timer = new Timer(this.waitingDelay, taskPerformer);
+        	timer.setRepeats(false);
+        	timer.start();
         }
     }
 
@@ -128,6 +160,14 @@ public class Engine {
 
     public int getCurrentPlayer() {
         return currentState.currentPlayer;
+    }
+    
+    public int getWaitingDelay() {
+    	return this.waitingDelay;
+    }
+    
+    public void setWaitingDelay(int delay) {
+    	this.waitingDelay = delay;
     }
 
     // Undo / redo
