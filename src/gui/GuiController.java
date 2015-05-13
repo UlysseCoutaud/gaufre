@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
+import javax.swing.Timer;
 
 import engine.Engine;
 import engine.GameState;
@@ -96,7 +99,7 @@ public class GuiController implements ComponentListener
 			default: throw new RuntimeException("Undefined nbrPlayer value: " + gs.getNbPlayer());
 		}
 */
-		if (gs.mustLose())
+		if (gs.mustLose() && gs.boardIsEmpty())
 		{
 			JOptionPane.showMessageDialog(null, looseText + playersName[engine.getCurrentPlayer()-1]);
 			infoView.setText(endInfoText);
