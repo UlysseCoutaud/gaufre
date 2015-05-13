@@ -58,6 +58,8 @@ public class RestartInterface
 // ---------------------------------
 	public RestartInterface(Engine en, GuiController gui)
 	{
+		if (frame != null) return;
+
 		this.engine	= en;
 		this.gui	= gui;
 	}
@@ -83,6 +85,8 @@ public class RestartInterface
 		for (int i=dimMin; i<=dimMax; i++) dimList[i-dimMin] = i;
 		this.dimXCombo		= new JComboBox<Integer>(dimList);
 		this.dimYCombo		= new JComboBox<Integer>(dimList);
+		this.dimXCombo.setSelectedIndex(5);
+		this.dimYCombo.setSelectedIndex(4);
 
 		ButtonGroup bg		= new ButtonGroup();
 		this.twoIA			= new JRadioButton(twoIAText);

@@ -23,6 +23,9 @@ public class GuiController implements ComponentListener
 	private final static String				frameName			= "Waffle Game";
 	private final static String				playerText			= "Player: ";
 	private final static String				looseText			= "The looser is: " + playerText;
+	private final static String				IAPlayerText		= "  (CPU).";
+	private final static String				humanPlayerText		= "  (Human).";
+	private final static String				instructionText		= "At every turn, each player must eat a lowermost right end of the waffle.\nThe player who eats the poison celle looses the game";
 	private final static String				endInfoText			= "End of game!";
 	private final static int				defaultFrameWidth	= 800;
 	private final static int				defaultFrameHeight	= 800;
@@ -79,26 +82,30 @@ public class GuiController implements ComponentListener
 	public void update()
 	{
 		GameState gs = engine.getCurrentGameState();
+		String p1	= playerText + playersName[0];
+		String p2	= playerText + playersName[1];
+
 		this.waffleView		.update();
 		this.controlWindow	.update();
 		this.nameView		.setText(playerText+ playersName[engine.getCurrentPlayer()-1]);
 		this.updateMenuBar();
-/*		switch(engine.getNbHumanPlayers())
+		switch(engine.getNbHumanPlayers())
 		{
-			case 0: infoView.setText(twoAIText);		break;
-			case 1:
-				String text = oneAIText;
-				if (engine.getCurrentPlayer() == 1)	text += playerText+ engine.getCurrentPlayer();
-				else								text += this.IAText;
-				infoView.setText(text);
-				break;
-			case 2: infoView.setText(this.twoPlayersText);	break
-			default: throw new RuntimeException("Undefined nbrPlayer value: " + gs.getNbPlayer());
+			case 0: p1 += humanPlayerText;	p2 += IAPlayerText;		break;
+			case 1: p1 += humanPlayerText;	p2 += IAPlayerText;		break;
+			case 2: p1 += humanPlayerText;	p2 += humanPlayerText;	break;
+			default: throw new RuntimeException("Undefined nbrPlayer value: " + engine.getNbHumanPlayers());
 		}
-*/
+		infoView.setText("\n\n" + p1 + "\n" + p2 + "\n" + "\n\n\n\n" + instructionText);
+
 		if (gs.mustLose())
 		{
 			JOptionPane.showMessageDialog(null, looseText + playersName[engine.getCurrentPlayer()-1]);
+			infoView.setText(endInfoText);
+		}
+		if (gs.boardIsEmpty())
+		{
+			JOptionPane.showMessageDialog(null, looseText + playersName[(engine.getCurrentPlayer()+1)%2-1]);
 			infoView.setText(endInfoText);
 		}
 	}
